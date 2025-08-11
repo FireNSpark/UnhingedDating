@@ -31,7 +31,7 @@
   .navbtn{padding:8px 12px;border-radius:12px;background:#202028;border:1px solid rgba(255,255,255,.08);white-space:nowrap;display:inline-flex;gap:6px;align-items:center}
   .navbtn.cta{background:var(--red);border:none}
 
-  /* Centered quiz CTA under nav — visible, no JS action */
+  /* Centered quiz CTA under nav — visible, no click */
   .quiz-cta{display:flex;flex-direction:column;align-items:center;gap:8px;margin:12px 0 0}
   .quiz-cta .big{padding:12px 18px;border-radius:14px;font-weight:900;background:#202028;border:1px solid rgba(255,255,255,.12); color:#fff}
   .quiz-cta .big:active{transform:translateY(1px)}
@@ -134,8 +134,9 @@
   <div class="wrap">
     <div id="tagline" class="tagline">Admit the 🚩 first. Flirt second.</div>
     <div class="quiz-cta">
-      <button id="openQuiz" class="big" type="button">Take the Red Flag Quiz →</button>
-      <div class="sub">How many red flags are you starting with?</div>
+      <!-- visible but non-functional for now -->
+      <button id="openQuiz" class="big" type="button" style="pointer-events:none;opacity:.8">Take the Red Flag Quiz →</button>
+      <div class="sub">Sign up for beta — full app coming soon</div>
     </div>
   </div>
 </header>
@@ -308,8 +309,9 @@
     }catch{ msg.classList.remove('ok'); msg.classList.add('warn'); msg.textContent='Network hiccup. Try again.'; }
   });
 
-  // QUIZ button is intentionally non-functional for now:
+  // QUIZ button intentionally non-functional (no click handler yet)
   // document.getElementById('openQuiz').addEventListener('click', ()=>{ /* coming soon */ });
 </script>
 </body>
 </html>
+```0
