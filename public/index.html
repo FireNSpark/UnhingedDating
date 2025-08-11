@@ -1,241 +1,368 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Unhinged — Love at First 🚩</title>
-  <meta name="description" content="Unhinged: the dating site where we put our red flags on the table first and see who still swipes right." />
-  <meta property="og:title" content="Unhinged — Love at First 🚩" />
-  <meta property="og:description" content="Drop your red flags first. If they're still interested, that's real." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://dummyimage.com/1200x630/111/fff&text=Unhinged+%F0%9F%9A%A9" />
-  <meta name="theme-color" content="#da1a37" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0f0f12; --panel:#15151a; --muted:#9aa0a6; --text:#f5f7fa; --red:#da1a37; --red-2:#ff4d6d; --ring: rgba(218,26,55,.4);
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;height:100%;background:radial-gradient(1200px 800px at 85% -10%, rgba(218,26,55,.18), transparent 40%),
-      radial-gradient(900px 600px at 10% 110%, rgba(255,77,109,.12), transparent 50%), var(--bg);
-      color:var(--text); font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif}
-    a{color:inherit;text-decoration:none}
-    .wrap{max-width:1100px;margin:0 auto;padding:24px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .logo{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.5px}
-    .logo-badge{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
-      background:linear-gradient(135deg, var(--red), var(--red-2));box-shadow:0 10px 24px rgba(218,26,55,.35)}
-    .logo-badge span{font-size:20px}
-    .navbtn{padding:10px 14px;border-radius:12px;border:1px solid #2a2a32;background:#141418}
-    .cta{padding:12px 18px;border-radius:14px;font-weight:700;background:linear-gradient(135deg, var(--red), var(--red-2));
-      box-shadow:0 12px 28px rgba(218,26,55,.35); border:0; color:white; cursor:pointer}
-    .cta:focus{outline:2px solid var(--ring); outline-offset:2px}
-    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:48px 0}
-    .h-eyebrow{color:var(--red-2);font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:13px}
-    .h-title{font-size: clamp(36px, 5vw, 62px);line-height:1.04;margin:8px 0 12px;font-weight:800}
-    .h-sub{color:var(--muted);font-size: clamp(15px, 2.4vw, 18px)}
-    .hero-card{background:linear-gradient(180deg, #191922, #13131a);border:1px solid #262630;border-radius:22px; padding:22px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
-    .rf-list{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
-    .rf{background:#121218;border:1px solid #242432;border-radius:14px;padding:14px;display:flex;gap:10px;align-items:flex-start}
-    .rf .flag{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--red),var(--red-2));display:grid;place-items:center;font-size:13px;flex:0 0 22px}
-    .muted{color:var(--muted)}
-    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:18px}
-    .ghost{border:1px solid #2a2a32;border-radius:12px;background:#141418;color:#fff;padding:10px 14px;font-weight:600}
-    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:28px 0}
-    .f{background:#121218;border:1px solid #242432;border-radius:18px;padding:18px}
-    .f h4{margin:0 0 6px}
-    .wait{background:linear-gradient(180deg,#181823,#121218);border:1px dashed #343444;border-radius:18px;padding:18px;display:grid;gap:10px}
-    input[type=email]{width:100%;background:#0f0f14;border:1px solid #2b2b36;border-radius:12px;padding:12px 14px;color:#fff}
-    .small{font-size:12.5px;color:#8b90a0}
-    footer{padding:36px 0 28px;color:#8b90a0}
-    .tag{display:inline-flex;gap:8px;align-items:center;padding:7px 11px;border-radius:12px;border:1px solid #2a2a32;background:#141418;font-size:13px}
-    .card{background:linear-gradient(180deg,#121218,#0f0f14);border:1px solid #242432;border-radius:18px;padding:18px}
-    .demo-btn{background:transparent;border:1px dashed #3a3a48;color:#c7c9d3;border-radius:12px;padding:10px 14px;cursor:pointer}
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);padding:18px}
-    .modal .sheet{max-width:560px;width:100%;background:#121218;border:1px solid #2a2a32;border-radius:20px;padding:20px}
-    .chips{display:flex;gap:8px;flex-wrap:wrap}
-    .chip{padding:8px 12px;border-radius:999px;background:#1a1a22;border:1px solid #2a2a32;font-size:13px}
-    .watermark{opacity:.7}
-    @media (max-width: 920px){
-      .hero{grid-template-columns:1fr}
-      .rf-list{grid-template-columns:1fr}
-      .features{grid-template-columns:1fr;}
-      .wrap{padding:18px}
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UNHINGED — Dating as a game</title>
+<meta name="theme-color" content="#E11D2A" />
+<style>
+  :root{
+    --red:#E11D2A; --yellow:#F6C31C; --ink:#0F0F12; --charcoal:#141418; --muted:#b8b9c6;
+    --radius:18px; --shadow:0 14px 36px rgba(0,0,0,.28);
+  }
+  *{box-sizing:border-box} html,body{margin:0;background:linear-gradient(180deg,#0e0e12,#141418);color:#fff;font:500 16px/1.5 Inter,system-ui,Segoe UI,Roboto,Arial}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:18px}
+
+  /* Header / logo */
+  header{position:sticky;top:0;z-index:40;background:linear-gradient(180deg,#0e0e12 70%,rgba(14,14,18,.6));backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+  .bar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .logo{position:relative;display:flex;align-items:center;gap:12px}
+  .mark{width:28px;height:28px;background:conic-gradient(from 180deg at 50% 50%, var(--red) 0 75%, #fff 75%);border-radius:7px;position:relative;box-shadow:0 0 0 0 rgba(225,29,42,.55);animation:pulse 2.4s infinite}
+  .mark:after{content:"";position:absolute;left:7px;top:7px;width:14px;height:14px;border:2px solid #fff;border-left-color:transparent;border-bottom-color:transparent;transform:rotate(-45deg)}
+  @keyframes pulse{50%{box-shadow:0 0 0 16px rgba(225,29,42,0)}}
+  .word{position:relative;font-weight:1000;letter-spacing:.02em;font-size:30px;transform:rotate(-3.2deg);transform-origin:left bottom}
+  .word .dating{position:absolute;right:-18px;bottom:-10px;font-size:11px;letter-spacing:.16em;color:#e9e9ef;opacity:.9;transform:rotate(3deg)}
+  nav{display:flex;gap:10px;flex-wrap:wrap}
+  .navbtn{padding:8px 12px;border-radius:12px;background:#202028;border:1px solid rgba(255,255,255,.08)}
+  .navbtn.cta{background:var(--red);border:none}
+
+  /* Centered quiz CTA under nav — BIG + visible */
+  .quiz-cta{display:flex;flex-direction:column;align-items:center;gap:8px;margin:12px 0 0}
+  .quiz-cta .big{
+    padding:12px 18px;border-radius:14px;cursor:pointer;font-weight:900;
+    background:var(--red); border:0; color:#fff; box-shadow:0 8px 24px rgba(225,29,42,.35);
+  }
+  .quiz-cta .big:active{transform:translateY(1px)}
+  .quiz-cta .sub{color:#ffdbe0;font-size:14px;opacity:.95}
+
+  /* Taglines */
+  .tagline{color:#e9e9ef;opacity:.95;font-weight:700;margin:8px 0 10px;min-height:1.6em;transition:opacity .25s}
+  .fade{opacity:0}
+
+  /* Profiles scroller (continuous marquee) */
+  .rail-wrap{border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;background:#0f0f12;box-shadow:var(--shadow)}
+  .rail{display:flex;gap:12px;padding:12px;white-space:nowrap;animation:scroll 22s linear infinite}
+  .rail:hover{animation-play-state:paused}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+  .card{min-width:280px;max-width:280px;background:#16171d;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden}
+  .card img{display:block;width:100%;height:170px;object-fit:cover}
+  .body{padding:10px}
+  .top{display:flex;justify-content:space-between;align-items:center}
+  .meta{font-size:12px;color:#cfd0de}
+  .badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .badge{font-size:12px;padding:4px 8px;border-radius:999px;background:#282a33;border:1px solid rgba(255,255,255,.09)}
+  .badge.red{background:#8f171e}
+  .meter{height:8px;background:#1d1f27;border-radius:999px;overflow:hidden;border:1px solid #2a2d36;margin-top:8px}
+  .fill{height:100%;background:linear-gradient(90deg,#ff6b6b,#ff2a2a)}
+
+  section{padding:28px 0}
+  .h2{font-size:24px;margin:0 0 10px}
+
+  /* Chaos Board */
+  .board{position:relative;background:#111217;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+  .pins{display:grid;grid-template-columns:repeat(1,1fr);gap:12px}
+  @media (min-width:760px){ .pins{grid-template-columns:repeat(2,1fr)} }
+  @media (min-width:1020px){ .pins{grid-template-columns:repeat(3,1fr)} }
+  .note{position:relative;background:#1a1b22;border:1px dashed #2e2f3a;border-radius:12px;padding:12px 12px 14px;transform:rotate(var(--rot,-1.2deg))}
+  .tack{position:absolute;top:-8px;left:12px;width:16px;height:16px;border-radius:50%;background:var(--red);box-shadow:0 3px 0 #0008}
+  .nf{font-weight:800;margin:0 0 4px}
+  .nmeta{display:flex;gap:8px;align-items:center;color:#cfd0de;font-size:13px}
+  .scale{height:8px;background:#1d1f27;border:1px solid #2a2d36;border-radius:999px;overflow:hidden;margin-top:8px}
+  .scale .fill{background:linear-gradient(90deg,#ffb54d,#ff2a2a);height:100%}
+
+  /* Live (gray static + blinking LIVE) */
+  .livebox{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#18181d;border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
+  .static{
+    position:absolute;inset:0;
+    background:
+      repeating-linear-gradient(0deg, #2a2a2a 0 2px, #303030 2px 4px),
+      repeating-linear-gradient(90deg, #2b2b2b 0 2px, #313131 2px 4px);
+    opacity:.85;
+    animation:noise 0.9s steps(6,end) infinite;
+  }
+  @keyframes noise { 50% { filter:brightness(1.05); } }
+  .livebadge{position:absolute;top:10px;left:10px;background:var(--red);padding:6px 10px;border-radius:10px;font-weight:900;animation:blink 1.2s infinite}
+  .hud{position:absolute;right:10px;bottom:10px;background:#0008;padding:8px 12px;border-radius:999px}
+  @keyframes blink{50%{opacity:.3}}
+
+  /* Reviews */
+  .wall{display:grid;grid-template-columns:1fr;gap:12px}
+  @media (min-width:880px){ .wall{grid-template-columns:1fr 1fr} }
+  .rev{background:#15161b;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
+  .rhead{display:flex;justify-content:space-between;align-items:center}
+  .flames{color:#ff5b40;font-weight:900}
+  .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .tag{font-size:12px;padding:4px 8px;border-radius:999px;background:#23242e;border:1px solid rgba(255,255,255,.08)}
+
+  /* Signup + contributor buttons */
+  .signup{background:#0f0f12;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+  .label{display:block;margin-top:10px;margin-bottom:6px;color:#e8e8e8;font-size:14px}
+  .input{width:100%;background:#0c0c0c;border:1px solid #2a2a2a;color:#fff;padding:14px;border-radius:12px;outline:none}
+  .input:focus{border-color:var(--yellow);box-shadow:0 0 0 3px #f6c31c33}
+  .btn{appearance:none;border:0;border-radius:14px;padding:14px 16px;font-weight:800;cursor:pointer}
+  .btn.primary{background:var(--red);color:#fff;margin-top:12px;width:100%}
+  .note{font-size:12px;color:#bdbdcc;margin-top:8px}
+  .ok{color:#7CFF7C}.warn{color:#F6C31C}
+  .pay{display:inline-block;margin:5px 8px 0 0;padding:8px 14px;font-weight:bold;color:#fff;text-decoration:none;border-radius:8px;transition:transform .18s}
+  .pay:hover{transform:scale(1.05)}
+  .pay.venmo{background:#1D62F0}
+  .pay.cashapp{background:#00D64B;color:#071B0C}
+
+  footer{padding:26px 0;color:#b8b8c2;text-align:center;border-top:1px solid rgba(255,255,255,.06);margin-top:10px}
+</style>
 </head>
 <body>
+
+<header>
+  <div class="wrap bar">
+    <div class="logo">
+      <div class="mark"></div>
+      <div class="word">UNHINGED <span class="dating">DATING</span></div>
+    </div>
+    <nav>
+      <a href="#profiles" class="navbtn">Profiles</a>
+      <a href="#chaos" class="navbtn">Chaos Board</a>
+      <a href="#live" class="navbtn">Live</a>
+      <a href="#reviews" class="navbtn">Reviews</a>
+      <a href="#friends" class="navbtn">Friends</a>
+      <a href="#fwb" class="navbtn">Friends with Benefits</a>
+      <a href="#join" class="navbtn cta">Join</a>
+    </nav>
+  </div>
+
   <div class="wrap">
-    <header>
-      <div class="logo" aria-label="Unhinged logo">
-        <div class="logo-badge" aria-hidden="true"><span>🚩</span></div>
-        <div>
-          <div style="font-size:18px">Unhinged</div>
-          <div class="watermark" style="font-size:12px;margin-top:-2px">Love at First 🚩</div>
+    <div id="tagline" class="tagline">Admit the 🚩 first. Flirt second.</div>
+
+    <!-- BIG centered Quiz CTA -->
+    <div class="quiz-cta">
+      <button id="openQuiz" class="big">Take the Red Flag Quiz →</button>
+      <div class="sub">How many red flags are you starting with?</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- PROFILES SCROLLER -->
+  <section id="profiles">
+    <div class="rail-wrap">
+      <div class="rail" id="rail"></div>
+    </div>
+  </section>
+
+  <!-- CHAOS BOARD -->
+  <section id="chaos">
+    <h2 class="h2">Chaos Board</h2>
+    <div class="board">
+      <div class="pins">
+        <div class="note" style="--rot:-1.8deg">
+          <span class="tack"></span>
+          <div class="nf">“Started a fight club in college because I was bored.”</div>
+          <div class="nmeta">🚩 <span>Red Flags: 3</span> · 👍 212</div>
+          <div class="scale"><div class="fill" style="width:78%"></div></div>
+        </div>
+        <div class="note" style="--rot:1.2deg">
+          <span class="tack"></span>
+          <div class="nf">“Still hooks up with my ex every few months. It’s seasonal.”</div>
+          <div class="nmeta">🚩 <span>Red Flags: 4</span> · 👍 168</div>
+          <div class="scale"><div class="fill" style="width:86%"></div></div>
+        </div>
+        <div class="note" style="--rot:-.6deg">
+          <span class="tack"></span>
+          <div class="nf">“Forgot three birthdays in a row. But I’m very fun in May.”</div>
+          <div class="nmeta">🚩 <span>Red Flags: 2</span> · 👍 94</div>
+          <div class="scale"><div class="fill" style="width:52%"></div></div>
         </div>
       </div>
-      <nav class="row" aria-label="site">
-        <a class="navbtn" href="#how">How it works</a>
-        <a class="navbtn" href="#waitlist">Waitlist</a>
-        <button class="cta" onclick="openModal()">Post Your Red Flags</button>
-      </nav>
-    </header><section class="hero">
-  <div>
-    <div class="h-eyebrow">put the 🚩 on the table first</div>
-    <h1 class="h-title">Date smarter. Start with the worst parts.</h1>
-    <p class="h-sub">Welcome to <strong>Unhinged</strong> — where we save everyone’s time by posting our red flags first and seeing who’s still interested. If they can handle page one, maybe they’re ready for the rest of the book.</p>
-    <div class=\"row\" style=\"flex-wrap:wrap\">
-      <form id=\"quick-form\" method=\"POST\" action=\"https://formspree.io/f/xbldzzkv\" onsubmit=\"return handleQuickSubmit(event)\" style=\"display:flex;gap:8px;flex-wrap:wrap;align-items:center\">
-        <input type=\"email\" name=\"email\" placeholder=\"you@example.com\" required aria-label=\"Email address\" style=\"flex:1;min-width:240px;background:#0f0f14;border:1px solid #2b2b36;border-radius:12px;padding:12px 14px;color:#fff\">
-        <input type=\"text\" name=\"_honeypot\" tabindex=\"-1\" autocomplete=\"off\" style=\"position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden\" aria-hidden=\"true\">
-        <input type=\"hidden\" name=\"_subject\" value=\"Unhinged Quick Pre‑Sign\">
-        <input type=\"hidden\" name=\"source\" id=\"utm_source\">
-        <input type=\"hidden\" name=\"campaign\" id=\"utm_campaign\">
-        <input type=\"hidden\" name=\"medium\" id=\"utm_medium\">
-        <input type=\"hidden\" name=\"referrer\" id=\"referrer\">
-        <input type=\"hidden\" name=\"device\" id=\"device\">
-        <button class=\"cta\" type=\"submit\" id=\"quick-cta\">Pre‑Sign Up — 5s</button>
-      </form>
-      <button class=\"ghost demo-btn\" onclick=\"openModal()\">Try a Demo</button>
-      <a class=\"ghost\" href=\"#waitlist\">Advanced (optional)</a>
-      <span class=\"tag\"><span>🔥</span><span>Beta opens soon</span></span>
     </div>
-    <div class=\"small muted\" style=\"margin-top:8px\">No spam. One click to unsubscribe.</div>
-  </div>
-  <div class="hero-card" aria-labelledby="demo-title">
-    <div class="muted" id="demo-title">Sample Profile • Red Flags</div>
-    <div class="rf-list">
-      <div class="rf"><div class="flag">🚩</div><div><strong>Texts back late</strong><div class="muted small">Not playing games — just chronically overbooked.</div></div></div>
-      <div class="rf"><div class="flag">🚩</div><div><strong>Gym rat</strong><div class="muted small">Yes, I’ll pick leg day over brunch. Sometimes.</div></div></div>
-      <div class="rf"><div class="flag">🚩</div><div><strong>Dog > People</strong><div class="muted small">You will be ranked #2 for a while.</div></div></div>
-      <div class="rf"><div class="flag">🚩</div><div><strong>Dark humor</strong><div class="muted small">If you’re easily offended, I’m not your guy.</div></div></div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section id="how">
-  <div class="features">
-    <div class="f"><h4>1) Post your 🚩 first</h4><p class="muted">Own the mess. Start honest, attract the right people.</p></div>
-    <div class="f"><h4>2) Filter by tolerance</h4><p class="muted">Match with people whose deal-breakers match your reality.</p></div>
-    <div class="f"><h4>3) Connect, eyes open</h4><p class="muted">If they’re still in after the red flags, go ahead and flirt.</p></div>
-  </div>
-</section>
+  <!-- LIVE SNAPSHOT (gray static) -->
+  <section id="live">
+    <h2 class="h2">Right now on Unhinged Live</h2>
+    <p class="note" style="color:#d7d7de">Broadcast your questionable decisions in real time.</p>
+    <div class="livebox" style="margin-top:10px">
+      <span class="livebadge">LIVE</span>
+      <div class="static" aria-hidden="true"></div>
+      <div class="hud">🔥 1,842 watching</div>
+    </div>
+  </section>
 
-<section id="waitlist" class="card">
-  <h3 style="margin:0 0 6px">Pre‑Sign Up & Beta Volunteers</h3>
-  <p class="muted" style="margin:0 0 12px">Be first in when we open. Check **Beta Tester** if you want early builds and to give feedback.</p>
-  <form id="waitlist-form" method="POST" action="https://formspree.io/f/xbldzzkv" onsubmit="return handleSubmit(event)">
-    <input type="hidden" name="_subject" value="Unhinged Pre‑Sign Up" />
-    <div class="row" style="gap:8px; flex-wrap:wrap">
-      <input type="text" name="name" placeholder="Name" aria-label="Name" required style="flex:1;background:#0f0f14;border:1px solid #2b2b36;border-radius:12px;padding:12px 14px;color:#fff" />
-      <input type="email" name="email" placeholder="you@example.com" required aria-label="Email address" style="flex:1" />
-    </div>
-    <div class="row" style="gap:8px; flex-wrap:wrap; margin-top:8px">
-      <select name="role" aria-label="Role" class="ghost" style="flex:1">
-        <option value="waitlist" selected>Early Access (Waitlist)</option>
-        <option value="tester">Beta Tester (Volunteer)</option>
-        <option value="partner">Partner / Collab</option>
-      </select>
-      <select name="platform" aria-label="Primary platform" class="ghost" style="flex:1">
-        <option value="ios">iOS</option>
-        <option value="android">Android</option>
-        <option value="web" selected>Web</option>
-      </select>
-      <input type="text" name="city" placeholder="City, Country (optional)" aria-label="Location" class="ghost" style="flex:1" />
-    </div>
-    <div class="row" style="gap:8px; flex-wrap:wrap; margin-top:8px">
-      <input type="text" name="social" placeholder="@handle (optional)" aria-label="Social handle" class="ghost" style="flex:1" />
-    </div>
-    <div style="margin-top:10px">
-      <label class="small"><input type="checkbox" name="nda_opt_in" value="yes" /> I’m open to a short tester NDA if needed.</label><br/>
-      <label class="small"><input type="checkbox" name="email_opt_in" value="yes" checked /> Email me updates about Unhinged.</label>
-    </div>
-    <div style="margin-top:10px">
-      <textarea name="first_flags" rows="3" placeholder="Drop 1–2 red flags (optional)" aria-label="Red flags" style="width:100%;background:#0f0f14;border:1px solid #2b2b36;border-radius:12px;padding:12px 14px;color:#fff"></textarea>
-    </div>
-    <div class="row" style="gap:8px; margin-top:12px">
-      <button class="cta" type="submit">Send</button>
-      <button type="button" class="ghost" onclick="copyShare()">Copy Share Link</button>
-      <span id="copyOk" class="small"></span>
-    </div>
-    <div id="form-status" class="small" role="status" style="margin-top:8px"></div>
-  </form>
-  <div class="small" style="margin-top:10px">No spam. Unsubscribe anytime. By joining you agree to our <a href="#" class="muted">terms</a>.</div>
-</section>
-
-<footer class="wrap">
-  <div class="small">© <span id="year"></span> Unhinged. Built by UnfavorableJosh. <span class="muted">Red layout, zero placeholders.</span></div>
-</footer>
-
-  </div>  <!-- Modal -->  <div class="modal" id="modal" aria-hidden="true" aria-label="Red flag demo modal">
-    <div class="sheet">
-      <h3 style="margin-top:0">Post Your Red Flags (Demo)</h3>
-      <p class="muted">This is a teaser. Type a couple of 🚩 and see the vibe.</p>
-      <div class="chips" id="chipList"></div>
-      <div class="row" style="margin-top:12px">
-        <input id="chipInput" type="text" placeholder="e.g., ‘I work too much’" style="flex:1;background:#0f0f14;border:1px solid #2b2b36;border-radius:12px;padding:10px 12px;color:#fff">
-        <button class="ghost" onclick="addChip()">Add 🚩</button>
-        <button class="cta" onclick="closeModal()">Looks Correct</button>
+  <!-- REVIEWS -->
+  <section id="reviews">
+    <h2 class="h2">Wall of Shame — past dates say</h2>
+    <div class="wall">
+      <div class="rev">
+        <div class="rhead"><strong>@Jamie27</strong><span class="flames">🔥🔥🔥</span></div>
+        <div class="tags"><span class="tag">Ghosts for months</span><span class="tag">Drama magnet</span></div>
+        <p style="margin:8px 0 0;color:#d9d9e3">“Fun, chaotic, disappears for weeks. 7/10 would text again.”</p>
+      </div>
+      <div class="rev">
+        <div class="rhead"><strong>@Andre31</strong><span class="flames">🔥🔥</span></div>
+        <div class="tags"><span class="tag">Financial chaos</span><span class="tag">Sleeps till 2PM</span></div>
+        <p style="margin:8px 0 0;color:#d9d9e3">“Nice but schedules dates like a crypto chart.”</p>
+      </div>
+      <div class="rev">
+        <div class="rhead"><strong>@Rae25</strong><span class="flames">🔥🔥🔥🔥</span></div>
+        <div class="tags"><span class="tag">Receipts ready</span><span class="tag">Most ghosted</span></div>
+        <p style="margin:8px 0 0;color:#d9d9e3">“Screenshots. For. Everything.”</p>
+      </div>
+      <div class="rev">
+        <div class="rhead"><strong>@Leo29</strong><span class="flames">🔥🔥</span></div>
+        <div class="tags"><span class="tag">Commitment? eh.</span></div>
+        <p style="margin:8px 0 0;color:#d9d9e3">“Sincere, allergic to labels. Great playlists though.”</p>
       </div>
     </div>
-  </div>  <script>
-    const $ = (q)=>document.querySelector(q);
-    const modal = $('#modal');
-    function openModal(){ modal.style.display='flex'; modal.setAttribute('aria-hidden','false'); $('#chipInput').focus(); }
-    function closeModal(){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
-    modal?.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
-    function addChip(){
-      const input = $('#chipInput');
-      const v = (input.value||'').trim();
-      if(!v) return;
-      const node = document.createElement('div');
-      node.className='chip';
-      node.textContent = '🚩 ' + v;
-      $('#chipList').appendChild(node);
-      input.value=''; input.focus();
-    }
-    async function handleSubmit(e){
-      e.preventDefault();
-      const status = $('#form-status');
-      status.textContent = 'Sending…';
-      try{
-        const data = new FormData(e.target);
-        const res = await fetch(e.target.action, { method:'POST', body:data, headers: { 'Accept':'application/json' }});
-        if(res.ok){ e.target.reset(); status.textContent = 'You’re on the list. See you in beta.'; }
-        else{ status.textContent = 'Something went wrong. Try again in a minute.'; }
-      }catch(err){ status.textContent = 'Network hiccup. Try again.'; }
-      return false;
-    }
-    document.getElementById('year').textContent = new Date().getFullYear();
-      function copyShare(){
-      navigator.clipboard.writeText(location.href).then(()=>{ document.getElementById('copyOk').textContent='Link copied.'; setTimeout(()=>document.getElementById('copyOk').textContent='', 2000); });
-    }
-      function copyShare(){
-      navigator.clipboard.writeText(location.href).then(()=>{ document.getElementById('copyOk').textContent='Link copied.'; setTimeout(()=>document.getElementById('copyOk').textContent='', 2000); });
-    }
-    // Lowest-friction quick signup
-    async function handleQuickSubmit(e){
-      e.preventDefault();
-      const btn = document.getElementById('quick-cta');
-      btn.disabled = true; btn.textContent = 'Sending…';
-      try{
-        // fill tracking fields
-        const params = new URLSearchParams(location.search);
-        document.getElementById('utm_source').value = params.get('utm_source') || '';
-        document.getElementById('utm_campaign').value = params.get('utm_campaign') || '';
-        document.getElementById('utm_medium').value = params.get('utm_medium') || '';
-        document.getElementById('referrer').value = document.referrer || '';
-        document.getElementById('device').value = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
-        const res = await fetch(e.target.action, { method:'POST', body:new FormData(e.target), headers:{'Accept':'application/json'} });
-        if(res.ok){
-          e.target.reset();
-          btn.textContent = 'You’re in ✅';
-        } else { btn.disabled = false; btn.textContent = 'Try again'; }
-      } catch(err){ btn.disabled = false; btn.textContent = 'Try again'; }
-      return false;
-    }
-  </script></body>
+  </section>
+
+  <!-- SIGNUP (bottom) -->
+  <section id="join">
+    <div class="signup">
+      <form id="joinForm" action="https://formsubmit.co/unfavorablejosh@gmail.com" method="POST">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_subject" value="New Unhinged Signup">
+        <label class="label">Name</label>
+        <input class="input" type="text" name="name" required placeholder="Your name">
+        <label class="label">Email</label>
+        <input class="input" type="email" name="email" required placeholder="you@email.com">
+        <button class="btn primary" type="submit">Join the chaos</button>
+        <div id="joinMsg" class="note">Ready.</div>
+      </form>
+
+      <!-- Supporter CTA + contributor buttons -->
+      <div class="note" style="margin-top:14px;color:#e3e3ea">
+        Help this startup get off the ground — chip in if you’re feeling chaotic.
+        <br><strong>$150 Lifetime Membership</strong> for early supporters.
+      </div>
+      <div style="margin-top:8px">
+        <a class="pay venmo" href="https://venmo.com/Joshua-Kirkley" target="_blank" rel="noopener">Contribute via Venmo</a>
+        <a class="pay cashapp" href="https://cash.app/$Jkirk007" target="_blank" rel="noopener">Contribute via Cash App</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © <span id="year"></span> UNHINGED — dating for people who admit they’re the problem.
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // rotating taglines (~6.5s)
+  const taglines = [
+    "Admit the 🚩 first. Flirt second.",
+    "Match by mayhem. Own your chaos.",
+    "If they still want you after this… game on."
+  ];
+  const tl = document.getElementById('tagline');
+  let ti = 0;
+  setInterval(()=>{
+    tl.classList.add('fade');
+    setTimeout(()=>{
+      ti = (ti+1) % taglines.length;
+      tl.textContent = taglines[ti];
+      tl.classList.remove('fade');
+    }, 250);
+  }, 6500);
+
+  // profiles (reliable images + fallback)
+  const profiles = [
+    { name:'Jamie, 27', img:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80', chaos:72, badges:['Still texts ex','Drama magnet','Ghosts sometimes'] },
+    { name:'Andre, 31', img:'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?auto=format&fit=crop&w=1200&q=80', chaos:58, badges:['Financial chaos','Sleeps till 2PM'] },
+    { name:'Rae, 25',   img:'https://images.unsplash.com/photo-1541534401786-2077eed87a57?auto=format&fit=crop&w=1200&q=80', chaos:81, badges:['Ghosts for months','Receipts ready'] },
+    { name:'Leo, 29',   img:'https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?auto=format&fit=crop&w=1200&q=80', chaos:46, badges:['Commitment? eh.'] },
+    { name:'Maya, 26',  img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1200&q=80', chaos:67, badges:['Drama magnet','Most ghosted'] },
+    { name:'Sam, 30',   img:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1200&q=80', chaos:74, badges:['Partied too hard','Second Chance Champ'] },
+  ];
+
+  const rail = document.getElementById('rail');
+  function renderCard(p){
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.innerHTML = `
+      <img src="${p.img}" alt="" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80'">
+      <div class="body">
+        <div class="top"><strong>${p.name}</strong><span class="meta">${Math.round(p.chaos/10)}/10</span></div>
+        <div class="badges">
+          ${p.badges.slice(0,3).map(b=>{
+            const cls = /ghost|drama|party|ex|fire|chaos/i.test(b) ? 'badge red' : 'badge';
+            return `<span class="${cls}">${b}</span>`;
+          }).join('')}
+        </div>
+        <div class="meter"><div class="fill" style="width:${p.chaos}%"></div></div>
+      </div>
+    `;
+    return el;
+  }
+  // Fill the rail twice for seamless scroll
+  [...profiles, ...profiles].forEach(p=> rail.appendChild(renderCard(p)));
+
+  // Email form (FormSubmit)
+  const form = document.getElementById('joinForm');
+  const msg  = document.getElementById('joinMsg');
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    msg.textContent='Sending…';
+    try{
+      const res=await fetch(form.action,{method:'POST',headers:{'Accept':'application/json'},body:new FormData(form)});
+      if(res.ok){ form.reset(); msg.classList.remove('warn'); msg.classList.add('ok'); msg.textContent='You’re in. Check your inbox.'; }
+      else{ msg.classList.remove('ok'); msg.classList.add('warn'); msg.textContent='Couldn’t send. Try again.'; }
+    }catch{ msg.classList.remove('ok'); msg.classList.add('warn'); msg.textContent='Network hiccup. Try again.'; }
+  });
+
+  // QUIZ: inject modal on demand so nothing lives at bottom
+  const openQuiz = document.getElementById('openQuiz');
+  openQuiz.addEventListener('click', ()=>{
+    const modal = document.createElement('div');
+    modal.className = 'modal open';
+    modal.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0008;backdrop-filter:blur(3px);z-index:60';
+    modal.innerHTML = `
+      <div class="cardQ" role="dialog" aria-modal="true" style="width:min(560px,92vw);background:#13131a;border:1px solid rgba(255,255,255,.08);border-radius:16px;box-shadow:0 14px 36px rgba(0,0,0,.35);padding:18px">
+        <h3 style="margin:0 0 8px">Red Flag Quiz</h3>
+        <div class="q">
+          <h4>1) Ex texts “u up?” at 2am. You…</h4>
+          <div class="opts">
+            <label style="display:flex;gap:8px;align-items:center;background:#1a1b22;border:1px solid #2a2d36;border-radius:12px;padding:10px;cursor:pointer"><input type="radio" name="q1" value="0"> Block and sleep like a saint</label>
+            <label style="display:flex;gap:8px;align-items:center;background:#1a1b22;border:1px solid #2a2d36;border-radius:12px;padding:10px;cursor:pointer"><input type="radio" name="q1" value="1"> Reply “who dis” (you know who dis)</label>
+            <label style="display:flex;gap:8px;align-items:center;background:#1a1b22;border:1px solid #2a2d36;border-radius:12px;padding:10px;cursor:pointer"><input type="radio" name="q1" value="2"> Uber there in pajamas</label>
+          </div>
+        </div>
+        <div class="q">
+          <h4>2) Your texting style?</h4>
+          <div class="opts">
+            <label style="display:flex;gap:8px;align-items:center;background:#1a1b22;border:1px solid #2a2d36;border-radius:12px;padding:10px;cursor:pointer"><input type="radio" name="q2" value="0"> Replies within daylight hours</label>
+            <label style="display:flex;gap:8px;align-items:center;background:#1a1b22;border:1px solid #2a2d36;border-radius:12px;padding:10px;cursor:pointer"><input type="radio" name="q2" value="1"> Vanish for 3 days, return with memes</label>
+            <label style="display:flex;gap:8px;align-items:center;background:#1a1b22;border:1px solid #2a2d36;border-radius:12px;padding:10px;cursor:pointer"><input type="radio" name="q2" value="2"> Double texts, triple vibes</label>
+          </div>
+        </div>
+        <div class="q">
+          <h4>3) First date pay?</h4>
+          <div class="opts">
+            <label style="display:flex;gap:8px;align-items:center;background:#1a1b22;border:1px solid #2a2d36;border-radius:12px;padding:10px;cursor:pointer"><input type="radio" name="q3" value="0"> Split it clean</label>
+            <label style="display:flex;gap:8px;align-items:center;background:#1a1b22;border:1px solid #2a2d36;border-radius:12px;padding:10px;cursor:pointer"><input type="radio" name="q3" value="1"> “Forgot” wallet (again)</label>
+            <label style="display:flex;gap:8px;align-items:center;background:#1a1b22;border:1px solid #2a2d36;border-radius:12px;padding:10px;cursor:pointer"><input type="radio" name="q3" value="2"> Crypto only, baby</label>
+          </div>
+        </div>
+        <div id="qResult" class="note" style="opacity:.8;margin-top:8px"></div>
+        <div class="row" style="display:flex;gap:10px;margin-top:12px;justify-content:flex-end">
+          <button id="closeQuiz" class="navbtn">Close</button>
+          <button id="submitQuiz" class="navbtn cta" style="background:#E11D2A;border:none">See my flags</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    modal.querySelector('#closeQuiz').onclick = ()=> modal.remove();
+    modal.querySelector('#submitQuiz').onclick = ()=>{
+      const vals = ['q1','q2','q3'].map(n=>{
+        const el = modal.querySelector(`input[name=${n}]:checked`);
+        return el ? parseInt(el.value,10) : 0;
+      });
+      const score = vals.reduce((a,b)=>a+b,0);
+      modal.querySelector('#qResult').textContent = `Your starting red flags: ${score} / 6`;
+    };
+  });
+</script>
+</body>
 </html>
