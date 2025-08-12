@@ -22,6 +22,16 @@
   .inputbar input{flex:1}
 </style>
 </head><body>
+
+<!-- Members-only gate -->
+<script>
+  if (localStorage.getItem('uh_member') !== '1') {
+    alert('Members only. Join first to access chat.');
+    location.href = 'index.html#join';
+    throw new Error('blocked');
+  }
+</script>
+
 <div class="wrap">
   <div class="top">
     <a class="pill" href="index.html">← Home</a>
