@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UNHINGED — Chaos Board</title>
+<link rel="icon" href="data:,">
+<style>
+  :root{--red:#E11D2A;--ink:#0F0F12}
+  *{box-sizing:border-box} html,body{margin:0;background:#0f0f12;color:#fff;font:500 16px/1.5 Inter,system-ui}
+  a{color:#fff;text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:18px}
+  .top{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+  .pill{padding:8px 12px;background:#1a1b22;border:1px solid rgba(255,255,255,.08);border-radius:999px}
+  h1{margin:6px 0 2px;font-size:26px;font-weight:900}
+  .sub{color:#cfd0de}
+  /* board */
+  .bar{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+  .f{padding:10px 12px;background:#14151b;border:1px solid rgba(255,255,255,.08);border-radius:12px}
+  .grid{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:760px){.grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1020px){.grid{grid-template-columns:1fr 1fr 1fr}}
+  .note{position:relative;background:#1a1b22;border:1px dashed #2e2f3a;border-radius:12px;padding:12px 12px 14px;transform:rotate(var(--rot,-1.2deg))}
+  .tack{position:absolute;top:-8px;left:12px;width:16px;height:16px;border-radius:50%;background:var(--red);box-shadow:0 3px 0 #0008}
+  .nf{font-weight:800;margin:0 0 6px}
+  .meta{display:flex;gap:10px;align-items:center;color:#cfd0de;font-size:13px}
+  .scale{height:8px;background:#1d1f27;border:1px solid #2a2d36;border-radius:999px;overflow:hidden;margin-top:8px}
+  .fill{height:100%;background:linear-gradient(90deg,#ffb54d,#ff2a2a)}
+  .row{display:flex;gap:8px;margin-top:8px}
+  .btn{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:#202028;color:#fff;cursor:pointer}
+  .btn.red{background:var(--red);border:0}
+  .foot{margin-top:20px;color:#bdbdcc;text-align:center;border-top:1px solid rgba(255,255,255,.06);padding-top:18px}
+</style>
+</head><body>
+<div class="wrap">
+  <div class="top">
+    <a class="pill" href="index.html">← Home</a>
+    <a class="pill" href="badges.html">🏅 Badges</a>
+    <a class="pill" href="redflags.html">🚩 Red Flags</a>
+  </div>
+  <h1>Chaos Board</h1>
+  <div class="sub">Confessions, callouts, and chaotic honesty from the community.</div>
+
+  <!-- Filters (front‑end only for now) -->
+  <div class="bar">
+    <select id="filterFlags" class="f">
+      <option value="all">All red‑flag levels</option>
+      <option value="low">Low (0–2)</option>
+      <option value="mid">Mid (3–4)</option>
+      <option value="high">High (5+)</option>
+    </select>
+    <select id="sortBy" class="f">
+      <option value="top">Top rated</option>
+      <option value="new">Newest</option>
+    </select>
+  </div>
+
+  <div id="board" class="grid"></div>
+
+  <div class="foot">Real‑time + submissions coming soon.</div>
+</div>
+<script>
+const posts = [
+  { text:'Started a fight club in college because I was bored.',
+    flags:3, likes:212, when: Date.now()-1000*60*60*7, rot:-1.6 },
+  { text:'Still hooks up with my ex every few months. It’s seasonal.',
+    flags:4, likes:168, when: Date.now()-1000*60*60*30, rot:1.4 },
+  { text:'Forgot three birthdays in a row. But I’m very fun in May.',
+    flags:2, likes:94, when: Date.now()-1000*60*60*50, rot:-.6 },
+  { text:'Double‑booked a date by accident. Showed up to both.',
+    flags:5, likes:301, when: Date.now()-1000*60*20, rot:.8 },
+  { text:'Muted notifications for 48h mid‑argument. Came back with snacks.',
+    flags:1, likes:77, when: Date.now()-1000*60*5, rot:-1.1 },
+];
+
+const board = document.getElementById('board');
+function render(list){
+  board.innerHTML='';
+  list.forEach(p=>{
+    const el = document.createElement('div');
+    el.className='note';
+    el.style.setProperty('--rot', (p.rot||-1.2)+'deg');
+    el.innerHTML = `
+      <span class="tack"></span>
+      <div class="nf">“${p.text}”</div>
+      <div class="meta">🚩 Red Flags: <strong>${p.flags}</strong> · 👍 ${p.likes}</div>
+      <div class="scale"><div class="fill" style="width:${Math.min(100,p.flags*18)}%"></div></div>
+      <div class="row">
+        <button class="btn">👍 Upvote</button>
+        <button class="btn">💬 Comment</button>
+        <button class="btn red">Report</button>
+      </div>
+    `;
+    board.appendChild(el);
+  });
+}
+render(posts);
+
+// dumb front-end filter/sort for now
+document.getElementById('filterFlags').onchange = rerender;
+document.getElementById('sortBy').onchange = rerender;
+function rerender(){
+  const f = document.getElementById('filterFlags').value;
+  const s = document.getElementById('sortBy').value;
+  let list = posts.slice();
+  if(f==='low') list = list.filter(p=>p.flags<=2);
+  if(f==='mid') list = list.filter(p=>p.flags>=3 && p.flags<=4);
+  if(f==='high') list = list.filter(p=>p.flags>=5);
+  if(s==='top') list.sort((a,b)=>b.likes-a.likes);
+  if(s==='new') list.sort((a,b)=>b.when-a.when);
+  render(list);
+}
+</script>
+</body></html>
