@@ -1,226 +1,50 @@
-<!DOCTYPE html><html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>UNHINGED — Badges & Red Flags</title>
-<meta name="theme-color" content="#E11D2A" />
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UNHINGED — Badges</title>
+<link rel="icon" href="data:,">
 <style>
-:root{--red:#E11D2A;--yellow:#F6C31C;--green:#22C55E;--ink:#0F0F12;--charcoal:#141418;--muted:#b8b9c6;--radius:16px;--shadow:0 14px 36px rgba(0,0,0,.28)}
-*{box-sizing:border-box} html,body{margin:0;background:linear-gradient(180deg,#0e0e12,#141418);color:#fff;font:500 16px/1.5 Inter,system-ui,Segoe UI,Roboto,Arial}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1100px;margin:0 auto;padding:18px}
-header{border-bottom:1px solid rgba(255,255,255,.06);background:#0f0f12}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{width:28px;height:28px;border-radius:7px;background:conic-gradient(from 180deg,#E11D2A 0 75%,#fff 75%);position:relative}
-.logo:after{content:"";position:absolute;left:7px;top:7px;width:14px;height:14px;border:2px solid #fff;border-left-color:transparent;border-bottom-color:transparent;transform:rotate(-45deg)}
-.h1{font-weight:1000;letter-spacing:.02em}
-nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-.navbtn{padding:8px 12px;border-radius:12px;background:#202028;border:1px solid rgba(255,255,255,.08)}
-.navbtn.cta{background:var(--red);border:none}
-.hero{padding:18px 0}
-.kicker{color:#ffdbe0;font-weight:800}
-h2{margin:0 0 12px}
-.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 16px}
-.input{flex:1;min-width:200px;background:#0c0c0c;border:1px solid #2a2a2a;color:#fff;padding:12px;border-radius:12px}
-.chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{padding:8px 10px;border-radius:999px;background:#202028;border:1px solid rgba(255,255,255,.08);cursor:pointer}
-.chip.active{background:#E11D2A;border-color:#E11D2A}
-.grid{display:grid;grid-template-columns:1fr;gap:12px}
-@media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
-@media(min-width:1020px){.grid{grid-template-columns:1fr 1fr 1fr}}
-.card{background:#15161b;border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
-.row{display:flex;align-items:center;gap:10px}
-.icon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-weight:900}
-.i-chaos{background:#3a1417} .i-fun{background:#3a2b0f} .i-safe{background:#0f2f20} .i-rely{background:#0f2b36} .i-comm{background:#1f2230} .i-honest{background:#2b1f14} .i-behav{background:#222}
-.small{color:#cfd0de;font-size:13px}
-.badge-name{font-weight:900}
-.tag{display:inline-block;margin-left:auto;padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.1);font-size:12px;color:#cfd0de}
-.desc{margin-top:8px;color:#d9d9e3}
-footer{padding:26px 0;color:#b8b8c2;text-align:center;border-top:1px solid rgba(255,255,255,.06);margin-top:14px}
-.section{margin-top:24px}
-.callout{background:#1a1a20;border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:12px;color:#ffdbe0}
-</style>
-</head>
-<body>
-<header>
-  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-    <div class="brand"><div class="logo"></div><div class="h1">UNHINGED</div></div>
-    <nav>
-      <a class="navbtn" href="index.html#profiles">Profiles</a>
-      <a class="navbtn" href="index.html#chaos">Chaos Board</a>
-      <a class="navbtn" href="index.html#live">Live</a>
-      <a class="navbtn" href="index.html#join">Join</a>
-      <a class="navbtn cta" href="badges.html">Badges</a>
-    </nav>
+  :root{--red:#E11D2A}
+  *{box-sizing:border-box} body{margin:0;background:#0f0f12;color:#fff;font:500 16px/1.5 Inter,system-ui}
+  a{color:#fff;text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:18px}
+  .top{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+  .pill{padding:8px 12px;background:#1a1b22;border:1px solid rgba(255,255,255,.08);border-radius:999px}
+  h1{margin:6px 0 2px;font-size:26px;font-weight:900}
+  .sub{color:#cfd0de}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:14px}
+  .card{background:#15161b;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#252632;border:1px solid rgba(255,255,255,.08);font-weight:800}
+  .tag{font-size:12px;color:#cfd0de;margin-top:6px}
+</style></head><body>
+<div class="wrap">
+  <div class="top">
+    <a class="pill" href="index.html">← Home</a>
+    <a class="pill" href="redflags.html">🚩 Red Flags</a>
   </div>
-</header>
-
-<main class="wrap">
-  <section class="hero">
-    <div class="kicker">Transparent by design</div>
-    <h2>Badges & Red Flags</h2>
-    <p class="small">Here’s how you earn badges — and the red flags we surface. Mode switches have a 30‑day cooldown and each card shows your mode timestamp.</p>
-    <div class="callout small">Design note: icons are placeholders; we’ll swap to custom SVGs later. Data is embedded for zero‑break deploys.</div>
-  </section>
-
-  <!-- Controls -->
-  <div class="toolbar">
-    <input id="q" class="input" placeholder="Search badges & flags…" />
-    <div class="chips" id="chips"></div>
-  </div>
-
-  <!-- Badges -->
-  <section class="section">
-    <h2>Badges</h2>
-    <div id="badgeGrid" class="grid"></div>
-  </section>
-
-  <!-- Red Flags -->
-  <section class="section">
-    <h2>Red Flags</h2>
-    <div id="flagGrid" class="grid"></div>
-  </section>
-</main>
-
-<footer>© <span id="y"></span> UNHINGED — own your chaos.</footer>
-
-<!-- Embedded data so it’s plug‑and‑play -->
-<script id="data" type="application/json">
-{
-  "badges": [
-    {"id":"second-chance-champ","name":"Second Chance Champ","cat":"behavior","icon":"↺","iconClass":"i-behav","criteria":"Reconnects with the same match after ghosting at least once.","design":"Gold medal with 2×"},
-    {"id":"plan-maker","name":"Plan Maker","cat":"behavior","icon":"📅","iconClass":"i-behav","criteria":"Proposes & books the plan for 3 unique dates.","design":"Calendar with check"},
-    {"id":"punctual-af","name":"Punctual AF","cat":"reliability","icon":"⏰","iconClass":"i-rely","criteria":"Arrives within 5 minutes for 5 verified dates.","design":"Clock with green ring"},
-    {"id":"rain-check","name":"Rain Check, Not Vanish","cat":"reliability","icon":"☔","iconClass":"i-rely","criteria":"Reschedules properly (24h notice) 3 times.","design":"Umbrella with check"},
-    {"id":"shows-up","name":"Shows Up","cat":"reliability","icon":"📍","iconClass":"i-rely","criteria":"5 confirmed dates attended.","design":"Pin in circle"},
-    {"id":"no-filter","name":"No Filter","cat":"honesty","icon":"👁️","iconClass":"i-honest","criteria":"Face/IRL verification + profile match checks.","design":"Eye over grid"},
-    {"id":"receipt-keeper","name":"Receipt Keeper","cat":"honesty","icon":"🧾","iconClass":"i-honest","criteria":"Uploads 3 tasteful receipts in disputes.","design":"Receipt with tiny flag"},
-    {"id":"straight-shooter","name":"Straight Shooter","cat":"honesty","icon":"🎯","iconClass":"i-honest","criteria":"States intentions on first message consistently.","design":"Target mark"},
-    {"id":"reply-daylight","name":"Reply Within Daylight","cat":"communication","icon":"🌤️","iconClass":"i-comm","criteria":"Median response < 12h across 30 days.","design":"Sun glyph"},
-    {"id":"ghosted-nah","name":"Ghosted? Nah","cat":"communication","icon":"🚫👻","iconClass":"i-comm","criteria":"0 ghost reports over 90 days.","design":"Ghost with ban sign"},
-    {"id":"clarity-royalty","name":"Clarity King/Queen","cat":"communication","icon":"💬","iconClass":"i-comm","criteria":"Clear, kind messaging (ratings avg ≥ 4.5).","design":"Two bubbles"},
-    {"id":"vibe-curator","name":"Vibe Curator","cat":"fun","icon":"🎵","iconClass":"i-fun","criteria":"Shares 3+ solid playlists.","design":"Music note disc"},
-    {"id":"creative-date","name":"Creative Date","cat":"fun","icon":"✨","iconClass":"i-fun","criteria":"Hosts a non‑basic first date (mods verify).","design":"Sparkles"},
-    {"id":"memelord","name":"Memelord","cat":"fun","icon":"🖼️","iconClass":"i-fun","criteria":"Community upvotes 50+ on memes.","design":"Image card"},
-    {"id":"spice-1","name":"Spice Level 1","cat":"chaos","icon":"🌶️","iconClass":"i-chaos","criteria":"Self‑declared mild chaos.","design":"Pepper 1"},
-    {"id":"spice-3","name":"Spice Level 3","cat":"chaos","icon":"🌶️🌶️🌶️","iconClass":"i-chaos","criteria":"Mid chaos rating.","design":"Pepper 3"},
-    {"id":"spice-5","name":"Spice Level 5","cat":"chaos","icon":"🌶️🌶️🌶️🌶️🌶️","iconClass":"i-chaos","criteria":"Max chaos rating.","design":"Pepper 5"},
-    {"id":"plot-twist","name":"Plot Twist","cat":"chaos","icon":"🌀","iconClass":"i-chaos","criteria":"Surprise plan with positive rating.","design":"Twister swirl"},
-    {"id":"face-verified","name":"Face Verified Weekly","cat":"safety","icon":"🛡️","iconClass":"i-safe","criteria":"Pass weekly selfie challenge.","design":"Shield‑check"},
-    {"id":"irl-verified","name":"IRL Verified","cat":"safety","icon":"🛡️","iconClass":"i-safe","criteria":"In‑person verification complete.","design":"Shield‑ID"},
-    {"id":"respectful-rater","name":"Respectful Rater","cat":"safety","icon":"🤝","iconClass":"i-safe","criteria":"Leaves fair, non‑abusive reviews.","design":"Hand+heart"},
-    {"id":"hype-squad","name":"Hype Squad","cat":"community","icon":"📣","iconClass":"i-fun","criteria":"Invites 5 friends who verify.","design":"Megaphone"},
-    {"id":"bug-hunter","name":"Bug Hunter","cat":"community","icon":"🐞","iconClass":"i-fun","criteria":"Reports a verified issue.","design":"Bug glyph"},
-    {"id":"event-host","name":"Event Host","cat":"community","icon":"🎟️","iconClass":"i-fun","criteria":"Hosts a community hang.","design":"Ticket"},
-    {"id":"streak-7","name":"Streak 7","cat":"milestone","icon":"🔥","iconClass":"i-fun","criteria":"7 days active.","design":"Flame"},
-    {"id":"streak-30","name":"Streak 30","cat":"milestone","icon":"🔥🔥","iconClass":"i-fun","criteria":"30 days active.","design":"Double flame"},
-    {"id":"first-match","name":"First Match","cat":"milestone","icon":"💖","iconClass":"i-fun","criteria":"First mutual like.","design":"Heart"},
-    {"id":"went-live","name":"Went Live","cat":"streaming","icon":"🔴","iconClass":"i-chaos","criteria":"First livestream.","design":"Red dot"},
-    {"id":"audience-fave","name":"Audience Favorite","cat":"streaming","icon":"⭐","iconClass":"i-fun","criteria":"500+ live reactions.","design":"Star"},
-    {"id":"mod-helper","name":"Mod Helper","cat":"streaming","icon":"🔨","iconClass":"i-safe","criteria":"Helped moderate a live room.","design":"Hammer"}
-  ],
-  "flags": [
-    {"id":"serial-ghoster","name":"Serial Ghoster","icon":"👻","iconClass":"i-comm","criteria":"Ghosts 5+ matches in a month."},
-    {"id":"texts-ex-often","name":"Still Texts Ex","icon":"📱💔","iconClass":"i-chaos","criteria":"Mentions/contacts ex in >50% of chats."},
-    {"id":"seasonal-hookup","name":"Seasonal Hookup","icon":"📆","iconClass":"i-chaos","criteria":"Cyclical on/off dating pattern noted."},
-    {"id":"forgot-birthday","name":"Forgot Your Birthday","icon":"🎂❌","iconClass":"i-comm","criteria":"Partner reports missed key dates."},
-    {"id":"crypto-only","name":"Crypto‑Only Dates","icon":"🪙","iconClass":"i-chaos","criteria":"Refuses normal payments repeatedly."},
-    {"id":"forgot-wallet","name":"“Forgot” Wallet","icon":"🧭💸","iconClass":"i-chaos","criteria":"3+ incidents in 60 days."},
-    {"id":"drama-magnet","name":"Drama Magnet","icon":"🧲","iconClass":"i-chaos","criteria":"3+ red‑flag reports in 30 days."},
-    {"id":"oversharer","name":"Oversharer","icon":"📢","iconClass":"i-fun","criteria":"TMI repeatedly in early chat."},
-    {"id":"love-bomber","name":"Love Bomber","icon":"💣","iconClass":"i-chaos","criteria":"Excessive affection in first 72h."},
-    {"id":"wont-define","name":"Won’t Define","icon":"❓","iconClass":"i-comm","criteria":"Avoids labels > 3 months."},
-    {"id":"party-every-night","name":"Party Every Night","icon":"🎉","iconClass":"i-chaos","criteria":"4+ parties per week."},
-    {"id":"clingy-comet","name":"Clingy Comet","icon":"🪐","iconClass":"i-chaos","criteria":"Rapid escalation + constant pings."},
-    {"id":"screenshot-hoarder","name":"Screenshot Hoarder","icon":"🖼️📥","iconClass":"i-honest","criteria":"Stores/uses receipts excessively."},
-    {"id":"late-night-drunk","name":"2am Drunk Caller","icon":"🍻📞","iconClass":"i-chaos","criteria":"Repeated late intoxicated calls."}
-  ],
-  "categories":[
-    {"id":"behavior","name":"Behavior"},{"id":"honesty","name":"Honesty"},
-    {"id":"communication","name":"Communication"},{"id":"reliability","name":"Reliability"},
-    {"id":"fun","name":"Fun/Community"},{"id":"chaos","name":"Chaos"},
-    {"id":"safety","name":"Safety"},{"id":"milestone","name":"Milestone"},{"id":"streaming","name":"Streaming"}
-  ]
-}
-</script>
-
+  <h1>Badges</h1>
+  <div class="sub">Earn these by not being a menace. Mostly.</div>
+  <div class="grid" id="list"></div>
+</div>
 <script>
-document.getElementById('y').textContent = new Date().getFullYear();
-
-const data = JSON.parse(document.getElementById('data').textContent);
-const badgeGrid = document.getElementById('badgeGrid');
-const flagGrid  = document.getElementById('flagGrid');
-const chips = document.getElementById('chips');
-const q = document.getElementById('q');
-
-const catMap = {
-  behavior:{label:'Behavior', cls:'i-behav'},
-  honesty:{label:'Honesty', cls:'i-honest'},
-  communication:{label:'Communication', cls:'i-comm'},
-  reliability:{label:'Reliability', cls:'i-rely'},
-  fun:{label:'Fun/Community', cls:'i-fun'},
-  chaos:{label:'Chaos', cls:'i-chaos'},
-  safety:{label:'Safety', cls:'i-safe'},
-  milestone:{label:'Milestone', cls:'i-fun'},
-  streaming:{label:'Streaming', cls:'i-chaos'}
-};
-
-let activeCat = 'all';
-
-function renderChips(){
-  const all = [{id:'all',name:'All'}].concat(data.categories);
-  chips.innerHTML = '';
-  all.forEach(c=>{
-    const el = document.createElement('button');
-    el.className = 'chip' + (c.id===activeCat ? ' active' : '');
-    el.textContent = c.name || c.id;
-    el.onclick = ()=>{
-      activeCat = c.id;
-      render();
-    };
-    chips.appendChild(el);
-  });
-}
-
-function cardHTML(item, isBadge=true){
-  const iconClass = item.iconClass || 'i-fun';
-  const tag = isBadge ? (catMap[item.cat]?.label || 'Badge') : 'Red Flag';
-  return `
-    <div class="card">
-      <div class="row">
-        <div class="icon ${iconClass}">${item.icon||'🏷️'}</div>
-        <div>
-          <div class="badge-name">${item.name}</div>
-          <div class="small">${item.criteria}</div>
-        </div>
-        <span class="tag">${tag}</span>
-      </div>
-      ${item.design?`<div class="desc small">Design: ${item.design}</div>`:''}
-    </div>`;
-}
-
-function render(){
-  const term = (q.value||'').toLowerCase();
-  const cat = activeCat;
-
-  const badges = data.badges.filter(b=>{
-    const inCat = (cat==='all') || (b.cat===cat);
-    const t = (b.name+' '+(b.criteria||'')+' '+(b.design||'')+' '+(b.cat||'')).toLowerCase();
-    return inCat && t.includes(term);
-  });
-  const flags = data.flags.filter(f=>{
-    const t = (f.name+' '+(f.criteria||'')).toLowerCase();
-    return t.includes(term);
-  });
-
-  badgeGrid.innerHTML = badges.map(b=>cardHTML(b,true)).join('');
-  flagGrid.innerHTML = flags.map(f=>cardHTML(f,false)).join('');
-}
-
-q.addEventListener('input', render);
-
-renderChips();
-render();
+const badges = [
+  { name:'Second Chance Champ', desc:'Completed a follow‑up date after a rocky first.' },
+  { name:'Ghostbuster', desc:'Responded within 24h for 14 days straight.' },
+  { name:'Receipt Keeper', desc:'Provided context before calling someone out.' },
+  { name:'On‑Time Icon', desc:'Arrived within 5 minutes of the plan.' },
+  { name:'Green Flag Parade', desc:'30 days with zero new flags.' },
+  { name:'Real One', desc:'Verified identity weekly for a month.' },
+  { name:'Respectful Exit', desc:'Ended things clearly (no ghosting).' },
+  { name:'Plan Maker', desc:'Proposed and executed a date plan.' },
+  { name:'Hype Friend', desc:'Left 5 helpful, kind reviews.' },
+  { name:'Comeback Kid', desc:'Improved chaos score by 20% in 30 days.' },
+  { name:'Wing Certified', desc:'Got vouched by 3 friends.' },
+  { name:'Boundary Boss', desc:'Set and honored boundaries.' },
+];
+document.getElementById('list').innerHTML = badges.map(b=>`
+  <div class="card">
+    <div class="badge">🏅 ${b.name}</div>
+    <div class="tag">${b.desc}</div>
+  </div>
+`).join('');
 </script>
-</body>
-</html>
+</body></html>
