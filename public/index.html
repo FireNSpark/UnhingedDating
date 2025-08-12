@@ -9,31 +9,32 @@
     --red:#E11D2A; --yellow:#F6C31C; --ink:#0F0F12; --charcoal:#141418; --muted:#b8b9c6;
     --radius:18px; --shadow:0 14px 36px rgba(0,0,0,.28);
   }
-  *{box-sizing:border-box} html,body{margin:0;background:linear-gradient(180deg,#0e0e12,#141418);color:#fff;font:500 16px/1.5 Inter,system-ui,Segoe UI,Roboto,Arial}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:linear-gradient(180deg,#0e0e12,#141418);color:#fff;font:500 16px/1.5 Inter,system-ui,Segoe UI,Roboto,Arial}
   a{color:inherit;text-decoration:none}
   .wrap{max-width:1100px;margin:0 auto;padding:18px}
 
-  /* Header / logo */
+  /* Header */
   header{position:relative;background:linear-gradient(180deg,#0e0e12 70%,rgba(14,14,18,.6));border-bottom:1px solid rgba(255,255,255,.06)}
   .bar{display:flex;justify-content:space-between;align-items:center;gap:12px}
-  .logo{position:relative;display:flex;align-items:center;gap:12px}
+  .logo{display:flex;align-items:center;gap:12px}
   .mark{width:28px;height:28px;background:conic-gradient(from 180deg at 50% 50%, var(--red) 0 75%, #fff 75%);border-radius:7px;position:relative;box-shadow:0 0 0 0 rgba(225,29,42,.55);animation:pulse 2.4s infinite}
   .mark:after{content:"";position:absolute;left:7px;top:7px;width:14px;height:14px;border:2px solid #fff;border-left-color:transparent;border-bottom-color:transparent;transform:rotate(-45deg)}
   @keyframes pulse{50%{box-shadow:0 0 0 16px rgba(225,29,42,0)}}
-  .word{position:relative;font-weight:1000;letter-spacing:.02em;font-size:30px;transform:rotate(-3.2deg);transform-origin:left bottom}
+  .word{position:relative;font-weight:1000;letter-spacing:.02em;font-size:30px;transform:rotate(-3.2deg);transform-origin:left bottom;margin-top:6px}
   .word .dating{position:absolute;right:-18px;bottom:-10px;font-size:11px;letter-spacing:.16em;color:#e9e9ef;opacity:.9;transform:rotate(3deg)}
-  .word{margin-top:6px}
 
-  /* Top navigation strip */
+  /* Top nav (static row) */
   .topnav{background:#0f0f12;border-bottom:1px solid rgba(255,255,255,.06)}
   .topnav .wrap{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
   nav{display:flex;gap:10px;flex-wrap:wrap}
-  .navbtn{padding:8px 12px;border-radius:12px;background:#202028;border:1px solid rgba(255,255,255,.08);white-space:nowrap;display:inline-flex;gap:6px;align-items:center}
+  .navbtn{padding:8px 12px;border-radius:12px;background:#202028;border:1px solid rgba(255,255,255,.08);white-space:nowrap}
   .navbtn.cta{background:var(--red);border:none}
+  @media (max-width:560px){ .navbtn{padding:8px 10px} }
 
-  /* Centered quiz CTA under nav — visible, no click */
+  /* Quiz CTA */
   .quiz-cta{display:flex;flex-direction:column;align-items:center;gap:8px;margin:12px 0 0}
-  .quiz-cta .big{padding:12px 18px;border-radius:14px;font-weight:900;background:#202028;border:1px solid rgba(255,255,255,.12); color:#fff}
+  .quiz-cta .big{padding:12px 18px;border-radius:14px;cursor:pointer;font-weight:900;background:var(--red); border:0; color:#fff; box-shadow:0 8px 24px rgba(225,29,42,.35)}
   .quiz-cta .big:active{transform:translateY(1px)}
   .quiz-cta .sub{color:#ffdbe0;font-size:14px;opacity:.95}
 
@@ -41,7 +42,7 @@
   .tagline{color:#e9e9ef;opacity:.95;font-weight:700;margin:8px 0 10px;min-height:1.6em;transition:opacity .25s}
   .fade{opacity:0}
 
-  /* Profiles scroller */
+  /* Profiles rail */
   .rail-wrap{border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;background:#0f0f12;box-shadow:var(--shadow)}
   .rail{display:flex;gap:12px;padding:12px;white-space:nowrap;animation:scroll 22s linear infinite}
   .rail:hover{animation-play-state:paused}
@@ -60,7 +61,7 @@
   section{padding:28px 0}
   .h2{font-size:24px;margin:0 0 10px}
 
-  /* Chaos Board */
+  /* Chaos notes */
   .board{position:relative;background:#111217;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
   .pins{display:grid;grid-template-columns:repeat(1,1fr);gap:12px}
   @media (min-width:760px){ .pins{grid-template-columns:repeat(2,1fr)} }
@@ -72,10 +73,10 @@
   .scale{height:8px;background:#1d1f27;border:1px solid #2a2d36;border-radius:999px;overflow:hidden;margin-top:8px}
   .scale .fill{background:linear-gradient(90deg,#ffb54d,#ff2a2a);height:100%}
 
-  /* Live (gray static + blinking LIVE) */
+  /* LIVE placeholder */
   .livebox{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#18181d;border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
   .static{position:absolute;inset:0;background:repeating-linear-gradient(0deg, #2a2a2a 0 2px, #303030 2px 4px),repeating-linear-gradient(90deg, #2b2b2b 0 2px, #313131 2px 4px);opacity:.85;animation:noise 0.9s steps(6,end) infinite}
-  @keyframes noise { 50% { filter:brightness(1.05); } }
+  @keyframes noise{50%{filter:brightness(1.05)}}
   .livebadge{position:absolute;top:10px;left:10px;background:var(--red);padding:6px 10px;border-radius:10px;font-weight:900;animation:blink 1.2s infinite}
   .hud{position:absolute;right:10px;bottom:10px;background:#0008;padding:8px 12px;border-radius:999px}
   @keyframes blink{50%{opacity:.3}}
@@ -100,7 +101,8 @@
   .ok{color:#7CFF7C}.warn{color:#F6C31C}
   .pay{display:inline-block;margin:5px 8px 0 0;padding:8px 14px;font-weight:bold;color:#fff;text-decoration:none;border-radius:8px;transition:transform .18s}
   .pay:hover{transform:scale(1.05)}
-  .pay.venmo{background:#1D62F0} .pay.cashapp{background:#00D64B;color:#071B0C}
+  .pay.venmo{background:#1D62F0}
+  .pay.cashapp{background:#00D64B;color:#071B0C}
 
   footer{padding:26px 0;color:#b8b8c2;text-align:center;border-top:1px solid rgba(255,255,255,.06);margin-top:10px}
 </style>
@@ -117,9 +119,8 @@
         <a href="#reviews" class="navbtn">Reviews</a>
         <a href="#friends" class="navbtn">Friends</a>
         <a href="#fwb" class="navbtn">Friends with Benefits</a>
-        <a href="#" class="navbtn">🏅 Badges</a>
-        <a href="#" class="navbtn">🚩 Red Flags</a>
-        <a href="#join" class="navbtn cta">Join</a>
+        <a href="profile.html" class="navbtn">Profiles</a>
+        <a href="auth.html" class="navbtn cta">Join</a>
       </nav>
     </div>
   </div>
@@ -134,9 +135,9 @@
   <div class="wrap">
     <div id="tagline" class="tagline">Admit the 🚩 first. Flirt second.</div>
     <div class="quiz-cta">
-      <!-- visible but non-functional for now -->
-      <button id="openQuiz" class="big" type="button" style="pointer-events:none;opacity:.8">Take the Red Flag Quiz →</button>
-      <div class="sub">Sign up for beta — full app coming soon</div>
+      <button id="openQuiz" class="big">Take the Red Flag Quiz →</button>
+      <div class="sub">How many red flags are you starting with?</div>
+      <div class="note" style="text-align:center;margin-top:6px">Beta only — functionality coming soon.</div>
     </div>
   </div>
 </header>
@@ -149,7 +150,7 @@
     </div>
   </section>
 
-  <!-- CHAOS BOARD -->
+  <!-- CHAOS BOARD PREVIEW -->
   <section id="chaos">
     <h2 class="h2">Chaos Board</h2>
     <div class="board">
@@ -176,7 +177,7 @@
     </div>
   </section>
 
-  <!-- LIVE SNAPSHOT -->
+  <!-- LIVE SNAPSHOT (gray static) -->
   <section id="live">
     <h2 class="h2">Right now on Unhinged Live</h2>
     <p class="note" style="color:#d7d7de">Broadcast your questionable decisions in real time.</p>
@@ -227,6 +228,7 @@
         <button class="btn primary" type="submit">Join the chaos</button>
         <div id="joinMsg" class="note">Ready.</div>
       </form>
+
       <!-- Supporter CTA + contributor buttons -->
       <div class="note" style="margin-top:14px;color:#e3e3ea">
         Help this startup get off the ground — chip in if you’re feeling chaotic.
@@ -244,10 +246,18 @@
   © <span id="year"></span> UNHINGED — dating for people who admit they’re the problem.
 </footer>
 
-<script>
+<script type="module">
+  // Optional Firebase import (harmless if file exists)
+  try { await import('./js/app.firebase.js'); } catch(e) {}
+
+  // year
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // rotating taglines (~6.5s)
+  // quiz button -> placeholder (non-functional)
+  const quizBtn = document.getElementById('openQuiz');
+  quizBtn.addEventListener('click', ()=> alert('Red Flag Quiz is coming soon.'));
+
+  // rotating taglines
   const taglines = [
     "Admit the 🚩 first. Flirt second.",
     "Match by mayhem. Own your chaos.",
@@ -308,10 +318,6 @@
       else{ msg.classList.remove('ok'); msg.classList.add('warn'); msg.textContent='Couldn’t send. Try again.'; }
     }catch{ msg.classList.remove('ok'); msg.classList.add('warn'); msg.textContent='Network hiccup. Try again.'; }
   });
-
-  // QUIZ button intentionally non-functional (no click handler yet)
-  // document.getElementById('openQuiz').addEventListener('click', ()=>{ /* coming soon */ });
 </script>
 </body>
 </html>
-```0
