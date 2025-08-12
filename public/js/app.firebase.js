@@ -1,36 +1,21 @@
-// /js/firebase.js
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js';
-import { getAuth }        from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js';
-import { getFirestore }   from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js';
-import { getStorage }     from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js';
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'YOUR_API_KEY',
-  authDomain: 'YOUR_PROJECT_ID.firebaseapp.com',
-  projectId: 'YOUR_PROJECT_ID',
-  storageBucket: 'YOUR_PROJECT_ID.appspot.com',
-  messagingSenderId: 'YOUR_SENDER_ID',
-  appId: 'YOUR_APP_ID'
+  apiKey: "AIzaSyC4K7iCqvxTo6Gj5oIPsErF_vMDlhi0znE",
+  authDomain: "unhinged-8c6da.firebaseapp.com",
+  projectId: "unhinged-8c6da",
+  storageBucket: "unhinged-8c6da.firebasestorage.app",
+  messagingSenderId: "248472796860",
+  appId: "1:248472796860:web:1d7488b03935ae64f5dab9",
+  measurementId: "G-QEEY24M17T"
 };
 
-export const app     = initializeApp(firebaseConfig);
-export const auth    = getAuth(app);
-export const db      = getFirestore(app);
-export const storage = getStorage(app);
-// Put this in /js/app.firebase.js
-// FILL THESE WITH YOUR FIREBASE PROJECT VALUES
-const firebaseConfig = {
-  apiKey:        "YOUR_API_KEY",
-  authDomain:    "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:     "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:         "YOUR_APP_ID"
-};
-
-if (!window.firebaseApp) {
-  window.firebaseApp = firebase.initializeApp(firebaseConfig);
-  window.db = firebase.firestore();
-}
-export const app = window.firebaseApp;
-export const db  = window.db;
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
