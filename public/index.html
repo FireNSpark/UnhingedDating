@@ -24,7 +24,7 @@
   .word{position:relative;font-weight:1000;letter-spacing:.02em;font-size:30px;transform:rotate(-3.2deg);transform-origin:left bottom;margin-top:6px}
   .word .dating{position:absolute;right:-18px;bottom:-10px;font-size:11px;letter-spacing:.16em;color:#e9e9ef;opacity:.9;transform:rotate(3deg)}
 
-  /* Top nav (static row) */
+  /* Top nav */
   .topnav{background:#0f0f12;border-bottom:1px solid rgba(255,255,255,.06)}
   .topnav .wrap{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
   nav{display:flex;gap:10px;flex-wrap:wrap}
@@ -119,6 +119,8 @@
         <a href="reviews.html" class="navbtn">Reviews</a>
         <a href="badges.html" class="navbtn">Badges</a>
         <a href="redflags.html" class="navbtn">Red Flags</a>
+        <a href="casualties.html" class="navbtn">Casualties</a>
+        <a href="chat.html" class="navbtn">Chat</a>
         <a href="#friends" class="navbtn">Friends</a>
         <a href="#fwb" class="navbtn">Friends with Benefits</a>
         <a href="profile.html" class="navbtn">Profiles</a>
@@ -179,7 +181,7 @@
     </div>
   </section>
 
-  <!-- LIVE SNAPSHOT (gray static) -->
+  <!-- LIVE SNAPSHOT -->
   <section id="live">
     <h2 class="h2">Right now on Unhinged Live</h2>
     <p class="note" style="color:#d7d7de">Broadcast your questionable decisions in real time.</p>
@@ -217,7 +219,18 @@
     </div>
   </section>
 
-  <!-- SIGNUP (bottom) -->
+  <!-- CASUALTIES OF MODERN DATING -->
+  <section id="casualties" style="padding:28px 0">
+    <h2 class="h2">Casualties of Modern Dating</h2>
+    <p style="color:#cfd0de;margin-top:-6px">Short, raw stories from the front lines. Submit yours, read others.</p>
+    <div id="casGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px"></div>
+    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+      <a class="navbtn cta" href="casualties.html" style="background:#E11D2A;border:none">Read the Series</a>
+      <a class="navbtn" href="https://formsubmit.co/unfavorablejosh@gmail.com" target="_blank" rel="noopener">Submit a Story</a>
+    </div>
+  </section>
+
+  <!-- SIGNUP -->
   <section id="join">
     <div class="signup">
       <form id="joinForm" action="https://formsubmit.co/unfavorablejosh@gmail.com" method="POST">
@@ -231,7 +244,6 @@
         <div id="joinMsg" class="note">Ready.</div>
       </form>
 
-      <!-- Supporter CTA + contributor buttons -->
       <div class="note" style="margin-top:14px;color:#e3e3ea">
         Help this startup get off the ground — chip in if you’re feeling chaotic.
         <br><strong>$150 Lifetime Membership</strong> for early supporters.
@@ -249,15 +261,16 @@
 </footer>
 
 <script type="module">
-  // Optional Firebase import (harmless if file exists)
+  // optional Firebase (safe if missing)
   try { await import('./js/app.firebase.js'); } catch(e) {}
 
   // year
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // quiz button -> placeholder (non-functional)
-  const quizBtn = document.getElementById('openQuiz');
-  quizBtn.addEventListener('click', ()=> alert('Red Flag Quiz is coming soon.'));
+  // quiz button placeholder (non-functional)
+  document.getElementById('openQuiz').addEventListener('click', ()=>{
+    alert('Red Flag Quiz is coming soon.');
+  });
 
   // rotating taglines
   const taglines = [
@@ -276,7 +289,7 @@
     }, 250);
   }, 6500);
 
-  // profiles (reliable images + fallback)
+  // profiles
   const profiles = [
     { name:'Jamie, 27', img:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80', chaos:72, badges:['Still texts ex','Drama magnet','Ghosts sometimes'] },
     { name:'Andre, 31', img:'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?auto=format&fit=crop&w=1200&q=80', chaos:58, badges:['Financial chaos','Sleeps till 2PM'] },
@@ -285,7 +298,6 @@
     { name:'Maya, 26',  img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1200&q=80', chaos:67, badges:['Drama magnet','Most ghosted'] },
     { name:'Sam, 30',   img:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1200&q=80', chaos:74, badges:['Partied too hard','Second Chance Champ'] },
   ];
-
   const rail = document.getElementById('rail');
   function renderCard(p){
     const el = document.createElement('div');
@@ -305,21 +317,25 @@
     `;
     return el;
   }
-  // Fill the rail twice for seamless scroll
   [...profiles, ...profiles].forEach(p=> rail.appendChild(renderCard(p)));
 
-  // Email form (FormSubmit)
-  const form = document.getElementById('joinForm');
-  const msg  = document.getElementById('joinMsg');
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    msg.textContent='Sending…';
-    try{
-      const res=await fetch(form.action,{method:'POST',headers:{'Accept':'application/json'},body:new FormData(form)});
-      if(res.ok){ form.reset(); msg.classList.remove('warn'); msg.classList.add('ok'); msg.textContent='You’re in. Check your inbox.'; }
-      else{ msg.classList.remove('ok'); msg.classList.add('warn'); msg.textContent='Couldn’t send. Try again.'; }
-    }catch{ msg.classList.remove('ok'); msg.classList.add('warn'); msg.textContent='Network hiccup. Try again.'; }
-  });
+  // casualties teaser cards
+  const casualties = [
+    { t:"The Soft Launch That Never Launched", tag:"ghosting", line:"Three months of hints, zero dates, one lesson."},
+    { t:"Situationship Tax", tag:"mixed signals", line:"Paid in time, attention, and gas money."},
+    { t:"Breadcrumb Diet", tag:"bread‑crumbing", line:"Tiny crumbs, never a meal."},
+    { t:"DM Olympics", tag:"overlap", line:"Competing with a whole roster you can’t see."},
+    { t:"Romance as Content", tag:"clout", line:"Was it a date… or a B‑roll opportunity?"},
+    { t:"Right Person, Wrong App", tag:"misaligned", line:"FWB button was on, hearts were not."},
+  ];
+  const casGrid = document.getElementById('casGrid');
+  if (casGrid) casGrid.innerHTML = casualties.map(c=>`
+    <div style="background:#15161b;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px">
+      <div style="font-weight:900">${c.t}</div>
+      <div style="margin:6px 0 8px;color:#d9d9e3">${c.line}</div>
+      <span style="font-size:12px;padding:4px 8px;border-radius:999px;background:#23242e;border:1px solid rgba(255,255,255,.08)">#${c.tag}</span>
+    </div>
+  `).join('');
 </script>
 </body>
 </html>
