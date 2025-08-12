@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UNHINGED — Your Profile</title>
+<link rel="icon" href="data:,">
+<style>body{margin:0;background:#0f0f12;color:#fff;font:500 16px/1.5 Inter,system-ui} .wrap{max-width:760px;margin:0 auto;padding:22px}
+.h1{font-size:26px;font-weight:900;margin:6px 0 14px} .card{background:#15161b;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px}
+label{display:block;margin:10px 0 6px;color:#dadbe7} .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #2a2a2a;background:#0d0e12;color:#fff}
+.btn{margin-top:14px;padding:12px 16px;border-radius:12px;border:0;font-weight:900;cursor:pointer}
+.btn.red{background:#E11D2A;color:#fff} .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:10px}
+.thumb{position:relative;border-radius:12px;overflow:hidden;border:1px solid #2a2a2a;height:140px;display:flex;align-items:center;justify-content:center}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.note{margin-top:10px;color:#bdbdcc;font-size:13px}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.topbar a{color:#ddd;text-decoration:none}
+</style></head><body>
+<div class="wrap">
+  <div class="topbar"><a href="index.html">← Home</a> <a href="badges.html">🏅 Badges</a> <a href="redflags.html">🚩 Red Flags</a> <a id="logout" href="#" style="margin-left:auto">Log out</a></div>
+  <div class="h1">Your Profile</div>
+  <div class="card">
+    <div class="row">
+      <div>
+        <label>Name</label>
+        <input id="name" class="input" placeholder="Display name">
+      </div>
+      <div>
+        <label>Age</label>
+        <input id="age" class="input" type="number" min="18" max="90" placeholder="28">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label>Location</label>
+        <input id="loc" class="input" placeholder="City, State">
+      </div>
+      <div>
+        <label>Mode</label>
+        <select id="mode" class="input">
+          <option value="dating">Dating</option>
+          <option value="fwb">Friends with Benefits</option>
+        </select>
+      </div>
+    </div>
+    <label>Bio</label>
+    <textarea id="bio" rows="4" class="input" placeholder="Be honest. Embrace the chaos."></textarea>
+
+    <label>Photos (up to 6)</label>
+    <input id="photoInput" type="file" accept="image/*" multiple>
+    <div class="grid" id="gallery"></div>
+
+    <button id="save" class="btn red">Save Profile</button>
+    <div id="msg" class="note">Ready.</div>
+  </div>
+</div>
+<script type="module">
+import { app, auth, db, storage } from './js/firebase.js';
+import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js';
+import { doc, getDoc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js';
+import { ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js';
+
+const $=id=>document.getElementById(id), msg=$("msg"), gallery=$("gallery"), fileInput=$("photoInput");
+let uid=null, existingPhotos=[];
+
+onAuthStateChanged(auth, async (user)=>{
+  if(!user){ location.href='auth.html'; return; }
+  uid=user.uid;
+  await loadProfile();
+});
+
+async function loadProfile(){
+  const snap=await getDoc(doc(db,'profiles',uid));
+  if(snap.exists()){
+    const p=snap.data();
+    $("name").value=p.name||''; $("age").value=p.age||''; $("loc").value=p.location||''; $("bio").value=p.bio||''; $("mode").value=p.mode||'dating';
+    existingPhotos=p.photos||[]; renderPhotos();
+  }
+}
+
+function renderPhotos(){
+  gallery.innerHTML='';
+  existingPhotos.forEach(url=>{
+    const el=document.createElement('div'); el.className='thumb'; el.innerHTML=`<img src="${url}">`; gallery.appendChild(el);
+  });
+}
+
+$("save").onclick=async()=>{
+  msg.textContent='Saving…';
+  try{
+    // upload any new files
+    const files=[...fileInput.files];
+    const uploads=[];
+    for(const f of files.slice(0,6-existingPhotos.length)){
+      const path=`profiles/${uid}/${Date.now()}-${f.name}`;
+      const r=ref(storage,path); await uploadBytes(r,f); const url=await getDownloadURL(r); uploads.push(url);
+    }
+    const photos=[...existingPhotos, ...uploads].slice(0,6);
+
+    await setDoc(doc(db,'profiles',uid),{
+      name:$("name").value, age:parseInt($("age").value||'0',10)||null,
+      location:$("loc").value, bio:$("bio").value, mode:$("mode").value,
+      photos, updatedAt:serverTimestamp()
+    },{merge:true});
+
+    existingPhotos=photos; renderPhotos();
+    msg.textContent='Saved.';
+  }catch(e){ msg.textContent=e.message; }
+}
+
+$("logout").onclick=async(e)=>{ e.preventDefault(); await signOut(auth); };
+</script>
+</body></html>
