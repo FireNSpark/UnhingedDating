@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UNHINGED — Chat</title>
+<link rel="icon" href="data:,">
+<style>
+  :root{--red:#E11D2A}
+  *{box-sizing:border-box} body{margin:0;background:#0f0f12;color:#fff;font:500 16px/1.5 Inter,system-ui}
+  a{color:#fff;text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:18px}
+  .top{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+  .pill{padding:8px 12px;background:#1a1b22;border:1px solid rgba(255,255,255,.08);border-radius:999px}
+  h1{margin:6px 0 2px;font-size:26px;font-weight:900}
+  .sub{color:#cfd0de}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+  select,input,button{background:#12131a;border:1px solid #2a2a2a;color:#fff;border-radius:10px;padding:10px}
+  button{cursor:pointer;font-weight:800}
+  .board{display:grid;grid-template-columns:1fr;gap:10px}
+  .card{background:#15161b;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
+  .msgs{height:56vh;overflow:auto;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px;background:#0e0f14}
+  .msg{margin:8px 0}
+  .me{color:#8ff79d} .other{color:#e3e3ea}
+  .sys{color:#9aa0aa;font-size:13px}
+  .meta{font-size:12px;color:#9aa0aa}
+  .inputbar{display:flex;gap:8px;margin-top:10px}
+  .inputbar input{flex:1}
+</style></head><body>
+<div class="wrap">
+  <div class="top">
+    <a class="pill" href="index.html">← Home</a>
+    <a class="pill" href="badges.html">🏅 Badges</a>
+    <a class="pill" href="redflags.html">🚩 Red Flags</a>
+  </div>
+
+  <h1>Community Chat</h1>
+  <div class="sub">Meet people, talk chaos, make plans. Be decent or be gone.</div>
+
+  <div class="row">
+    <select id="room">
+      <option value="lobby">#lobby</option>
+      <option value="dating">#dating</option>
+      <option value="friends">#friends</option>
+      <option value="fwb">#friends-with-benefits</option>
+      <option value="vents">#vents</option>
+    </select>
+    <input id="handle" placeholder="Your name (real names preferred)">
+    <button id="enter" style="background:var(--red);border:0">Enter</button>
+  </div>
+
+  <div class="board">
+    <div class="card">
+      <div id="status" class="sys">Pick a room and enter.</div>
+      <div id="feed" class="msgs"></div>
+      <div class="inputbar">
+        <input id="text" placeholder="Type a message…" disabled>
+        <button id="send" disabled>Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+
+<!-- Your config + chat logic -->
+<script type="module" src="./js/app.firebase.js"></script>
+<script type="module" src="./js/chat.js"></script>
+</body></html>
