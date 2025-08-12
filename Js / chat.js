@@ -1,6 +1,4 @@
-// Put this in /js/chat.js
-import { db } from './app.firebase.js';
-
+// Fallback chat: localStorage + BroadcastChannel (same device/browser tabs)
 const roomSel = document.getElementById('room');
 const handle  = document.getElementById('handle');
 const enter   = document.getElementById('enter');
@@ -11,75 +9,55 @@ const sendBtn = document.getElementById('send');
 
 let room = 'lobby';
 let name = '';
-let unsub = null;
+const chan = new BroadcastChannel('unhinged_chat');
 
-// helpers
-const timeFmt = ts => new Date(ts).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+function key(r){ return `uh_chat_${r}`; }
+function load(r){ return JSON.parse(localStorage.getItem(key(r))||'[]'); }
+function save(r,arr){ localStorage.setItem(key(r), JSON.stringify(arr)); }
+function timeFmt(ts){ return new Date(ts).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }
 
-function print(msg, mine=false) {
-  const div = document.createElement('div');
-  div.className = 'msg';
-  div.innerHTML = `
-    <div class="${mine?'me':'other'}"><strong>${msg.user}</strong> — ${msg.text}</div>
-    <div class="meta">${timeFmt(msg.ts)}</div>
-  `;
-  feed.appendChild(div);
-  feed.scrollTop = feed.scrollHeight;
-}
-
-function system(text) {
-  const div = document.createElement('div');
-  div.className = 'msg sys';
-  div.textContent = text;
-  feed.appendChild(div);
-  feed.scrollTop = feed.scrollHeight;
-}
-
-async function join(newRoom){
-  // stop old stream
-  if (unsub) { unsub(); unsub = null; }
-
-  room = newRoom;
+function render(r){
   feed.innerHTML = '';
-  system(`Joined ${'#'+room}`);
-
-  // live stream (newest last)
-  unsub = db.collection('rooms').doc(room).collection('messages')
-    .orderBy('ts', 'asc')
-    .limit(200)
-    .onSnapshot(snap=>{
-      feed.innerHTML = '';
-      snap.forEach(doc=>{
-        const m = doc.data();
-        print(m, m.user === name);
-      });
-    });
+  load(r).slice(-200).forEach(m=>{
+    const mine = m.user===name;
+    const div = document.createElement('div');
+    div.className = 'msg';
+    div.innerHTML = `
+      <div class="${mine?'me':'other'}"><strong>${m.user}</strong> — ${m.text}</div>
+      <div class="meta">${timeFmt(m.ts)}</div>
+    `;
+    feed.appendChild(div);
+  });
+  feed.scrollTop = feed.scrollHeight;
 }
 
-async function send(){
-  const val = text.value.trim();
-  if (!val) return;
-  const doc = {
-    user: name,
-    text: val.slice(0, 500),
-    ts: Date.now()
-  };
-  text.value = '';
-  await db.collection('rooms').doc(room).collection('messages').add(doc);
+function post(textVal){
+  const msg = { user:name, text:textVal.slice(0,500), ts:Date.now(), room };
+  const arr = load(room); arr.push(msg); save(room, arr);
+  render(room);
+  chan.postMessage({ type:'new', room });
 }
 
-enter.addEventListener('click', async ()=>{
-  name = (handle.value || '').trim();
-  if (!name) { alert('Enter your name.'); return; }
+enter.addEventListener('click', ()=>{
+  name = (handle.value||'').trim();
+  if(!name){ alert('Enter your name.'); return; }
   status.textContent = `Connected as ${name}`;
   text.disabled = false; sendBtn.disabled = false;
-  await join(roomSel.value);
+  render(roomSel.value);
 });
 
-roomSel.addEventListener('change', async e=>{
-  if (!name) { room = e.target.value; return; }
-  await join(e.target.value);
+roomSel.addEventListener('change', e=>{
+  room = e.target.value;
+  if(!name) return;
+  render(room);
 });
 
-sendBtn.addEventListener('click', send);
-text.addEventListener('keydown', e=>{ if(e.key==='Enter') send(); });
+sendBtn.addEventListener('click', ()=>{
+  const v = text.value.trim(); if(!v) return;
+  text.value = ''; post(v);
+});
+text.addEventListener('keydown', e=>{ if(e.key==='Enter') sendBtn.click(); });
+
+chan.onmessage = (evt)=>{
+  if(evt.data?.type==='new' && evt.data.room===room){ render(room); }
+};
