@@ -1,0 +1,51 @@
+
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UNHINGED — Red Flags</title>
+<link rel="icon" href="data:,">
+<style>
+  :root{--red:#E11D2A}
+  *{box-sizing:border-box} body{margin:0;background:#0f0f12;color:#fff;font:500 16px/1.5 Inter,system-ui}
+  a{color:#fff;text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:18px}
+  .top{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+  .pill{padding:8px 12px;background:#1a1b22;border:1px solid rgba(255,255,255,.08);border-radius:999px}
+  h1{margin:6px 0 2px;font-size:26px;font-weight:900}
+  .sub{color:#cfd0de}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:14px}
+  .card{background:#15161b;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
+  .flag{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#2a1b1d;border:1px solid rgba(255,255,255,.08);font-weight:900}
+  .tag{font-size:12px;color:#cfd0de;margin-top:6px}
+</style></head><body>
+<div class="wrap">
+  <div class="top">
+    <a class="pill" href="index.html">← Home</a>
+    <a class="pill" href="badges.html">🏅 Badges</a>
+  </div>
+  <h1>Red Flags</h1>
+  <div class="sub">We track them so you can try to have fewer of them.</div>
+  <div class="grid" id="list"></div>
+</div>
+<script>
+const flags = [
+  { name:'Serial Ghoster', desc:'Fails to reply/close out within 72h.' },
+  { name:'Date Drifter', desc:'Cancels last minute twice in 30 days.' },
+  { name:'Wallet Houdini', desc:'“Forgets” to pay their share repeatedly.' },
+  { name:'Ex Orbit', desc:'Keeps active entanglements with an ex.' },
+  { name:'Love Bomber', desc:'Overpromises early, underdelivers later.' },
+  { name:'Gaslighter Lite', desc:'Denies texts/plans people have receipts for.' },
+  { name:'Time Bandit', desc:'Consistently 30+ minutes late.' },
+  { name:'Breadcrumb Baker', desc:'Keeps interest warm, never commits to plan.' },
+  { name:'Boundary Bender', desc:'Ignores clearly stated boundaries.' },
+  { name:'Vanisher', desc:'Deletes apps/accounts mid‑conversation.' },
+  { name:'Story Switcher', desc:'Changes key facts about life details.' },
+  { name:'Scene Starter', desc:'Picks fights in public spaces.' },
+];
+document.getElementById('list').innerHTML = flags.map(f=>`
+  <div class="card">
+    <div class="flag">🚩 ${f.name}</div>
+    <div class="tag">${f.desc}</div>
+  </div>
+`).join('');
+</script>
+</body></html>
