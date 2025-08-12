@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UNHINGED — Reviews</title>
+<link rel="icon" href="data:,">
+<style>
+  :root{--red:#E11D2A}
+  *{box-sizing:border-box} html,body{margin:0;background:#0f0f12;color:#fff;font:500 16px/1.5 Inter,system-ui}
+  a{color:#fff;text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:18px}
+  .top{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+  .pill{padding:8px 12px;background:#1a1b22;border:1px solid rgba(255,255,255,.08);border-radius:999px}
+  h1{margin:6px 0 2px;font-size:26px;font-weight:900}
+  .sub{color:#cfd0de}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+  .f{padding:10px 12px;background:#14151b;border:1px solid rgba(255,255,255,.08);border-radius:12px}
+  .grid{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:880px){.grid{grid-template-columns:1fr 1fr}}
+  .card{background:#15161b;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
+  .head{display:flex;justify-content:space-between;align-items:center}
+  .flames{color:#ff5b40;font-weight:900}
+  .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .tag{font-size:12px;padding:4px 8px;border-radius:999px;background:#23242e;border:1px solid rgba(255,255,255,.08)}
+  .meta{color:#cfd0de;font-size:13px;margin-top:6px}
+  .row{display:flex;gap:8px;margin-top:10px}
+  .btn{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:#202028;color:#fff;cursor:pointer}
+  .btn.red{background:var(--red);border:0}
+  .foot{margin-top:20px;color:#bdbdcc;text-align:center;border-top:1px solid rgba(255,255,255,.06);padding-top:18px}
+</style>
+</head><body>
+<div class="wrap">
+  <div class="top">
+    <a class="pill" href="index.html">← Home</a>
+    <a class="pill" href="chaos.html">🧨 Chaos</a>
+    <a class="pill" href="badges.html">🏅 Badges</a>
+  </div>
+  <h1>Wall of Shame — Reviews</h1>
+  <div class="sub">Anonymous reviews are off. Keep it honest, not cruel.</div>
+
+  <!-- Filters (front-end only now) -->
+  <div class="bar">
+    <select id="filterHeat" class="f">
+      <option value="all">All heat levels</option>
+      <option value="low">Low (1–2 🔥)</option>
+      <option value="mid">Mid (3 🔥)</option>
+      <option value="high">High (4–5 🔥)</option>
+    </select>
+    <select id="sortBy" class="f">
+      <option value="new">Newest</option>
+      <option value="top">Top</option>
+    </select>
+  </div>
+
+  <div id="list" class="grid"></div>
+
+  <div class="foot">Submit/reply/mod tools coming soon.</div>
+</div>
+<script>
+const reviews = [
+  { user:'@Jamie27', heat:3, tags:['Ghosts for months','Drama magnet'], text:'Fun, chaotic, disappears for weeks. 7/10 would text again.', likes:124, when:Date.now()-1000*60*20 },
+  { user:'@Andre31', heat:2, tags:['Financial chaos','Sleeps till 2PM'], text:'Nice but schedules dates like a crypto chart.', likes:88, when:Date.now()-1000*60*60*24 },
+  { user:'@Rae25',   heat:4, tags:['Receipts ready','Most ghosted'], text:'Screenshots. For. Everything.', likes:203, when:Date.now()-1000*60*60*8 },
+  { user:'@Leo29',   heat:2, tags:['Commitment? eh.'], text:'Sincere, allergic to labels. Great playlists though.', likes:67, when:Date.now()-1000*60*60*48 },
+];
+
+const root=document.getElementById('list');
+function flames(n){return '🔥'.repeat(n)}
+function card(r){
+  const el=document.createElement('div'); el.className='card';
+  el.innerHTML=`
+    <div class="head"><strong>${r.user}</strong><span class="flames">${flames(r.heat)}</span></div>
+    <div class="tags">${r.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    <p style="margin:8px 0 0;color:#d9d9e3">${r.text}</p>
+    <div class="meta">👍 ${r.likes}</div>
+    <div class="row">
+      <button class="btn">👍 Upvote</button>
+      <button class="btn">💬 Reply</button>
+      <button class="btn red">Report</button>
+    </div>
+  `;
+  return el;
+}
+function render(list){ root.innerHTML=''; list.forEach(r=>root.appendChild(card(r))); }
+function rerender(){
+  const f=document.getElementById('filterHeat').value;
+  const s=document.getElementById('sortBy').value;
+  let list=reviews.slice();
+  if(f==='low')  list=list.filter(r=>r.heat<=2);
+  if(f==='mid')  list=list.filter(r=>r.heat===3);
+  if(f==='high') list=list.filter(r=>r.heat>=4);
+  if(s==='new')  list.sort((a,b)=>b.when-a.when);
+  if(s==='top')  list.sort((a,b)=>b.likes-a.likes);
+  render(list);
+}
+document.getElementById('filterHeat').onchange=rerender;
+document.getElementById('sortBy').onchange=rerender;
+rerender();
+</script>
+</body></html>
