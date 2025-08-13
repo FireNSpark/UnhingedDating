@@ -1,5 +1,5 @@
+
 // public/js/auth.js
-alert('auth.js loaded'); // TEMP probe so you see it’s running
 
 import {
   signInWithEmailAndPassword,
@@ -26,14 +26,14 @@ function msg(t, ok=false){
 
 // Actions
 async function doSignIn(){
-  alert('doSignIn running'); // TEMP probe
+  
   try{
     msg('Signing in…');
     const em = (emailEl?.value || '').trim();
     const pw = passEl?.value || '';
     await signInWithEmailAndPassword(auth, em, pw);
     msg('Signed in!', true);
-    location.assign('./profile.html');
+    location.replace('./profile.html');;
   }catch(err){
     const m = err?.message || String(err);
     msg(m);
@@ -60,16 +60,3 @@ async function doForgot(){
   try{
     const em = (emailEl?.value || '').trim();
     if(!em){ msg('Enter your email first'); return; }
-    await sendPasswordResetEmail(auth, em);
-    msg('Reset email sent', true);
-  }catch(err){
-    const m = err?.message || String(err);
-    msg(m);
-    alert('Reset error: ' + m); // TEMP
-  }
-}
-
-// Wire up
-signinBtn?.addEventListener('click', doSignIn);
-createBtn?.addEventListener('click', doCreate);
-forgotBtn?.addEventListener('click', doForgot);
