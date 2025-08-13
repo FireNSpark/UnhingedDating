@@ -7,7 +7,19 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
-console.log("[firebase.js] loading");
+// Show banner on screen
+function showDebug(msg) {
+  let el = document.getElementById("debugBanner");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "debugBanner";
+    el.style.cssText = "position:fixed;top:0;left:0;right:0;background:#111;color:#fff;padding:4px 8px;z-index:9999;font:12px monospace";
+    document.body.prepend(el);
+  }
+  el.textContent = msg;
+}
+
+showDebug("[firebase.js] loading");
 
 const firebaseConfig = {
   apiKey: "AIzaSyC4K7iCqvxTo6Gj5oIPsErF_vMDlhi0znE",
@@ -19,7 +31,7 @@ const firebaseConfig = {
   measurementId: "G-QEEY24M17T"
 };
 
-// guard: make sure key fields exist
+// guard check
 for (const k of ["apiKey","authDomain","projectId","appId"]) {
   if (!firebaseConfig[k]) throw new Error(`[Firebase] Missing ${k} in firebaseConfig`);
 }
@@ -27,10 +39,9 @@ for (const k of ["apiKey","authDomain","projectId","appId"]) {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-// set persistence without top-level await
 setPersistence(auth, browserLocalPersistence)
-  .then(() => console.log("[firebase.js] persistence: local"))
-  .catch(err => console.warn("[firebase.js] persistence error:", err?.message || err));
+  .then(() => showDebug("[firebase.js] persistence: local"))
+  .catch(err => showDebug("[firebase.js] persistence error: " + (err?.message || err)));
 
 try { getAnalytics(app); } catch (_) {}
-console.log("[firebase.js] loaded");
+showDebug("[firebase.js] loaded");
