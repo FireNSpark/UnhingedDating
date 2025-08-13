@@ -16,6 +16,7 @@ const createBtn = $("create");
 const signInBtn = $("signin");
 const forgotBtn = $("forgot");
 const msg = $("status"); // matches <p id="status"> in profile.html;
+const displayNameEl = $("displayName"); // <-- assumes you have <input id="displayName">
 
 function setMsg(t, type="") {
   if (!msg) return;
@@ -43,13 +44,24 @@ function normalizeError(code){
 }
 
 let first = true;
-onAuthStateChanged(auth, (u) => {
+onAuthStateChanged(auth, async (u) => {
   const box = document.getElementById('profileBox');
   const emailOut = document.getElementById('email');
 
   if (u) {
     if (box) box.style.display = 'block';
     if (emailOut) emailOut.textContent = u.email || '—';
+
+    // NEW: Save display name if provided
+    if (displayNameEl && displayNameEl.value.trim()) {
+      try {
+        await updateProfile(u, { displayName: displayNameEl.value.trim() });
+        setMsg("Profile updated", "ok");
+      } catch (err) {
+        setMsg(normalizeError(err?.code), "warn");
+      }
+    }
+
     setMsg("", true);
   } else if (!first) {
     // only redirect after the initial null to avoid the loop
