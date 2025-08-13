@@ -31,7 +31,7 @@ async function doSignIn(){
     await signInWithEmailAndPassword(auth, em, pw);
     msg('Signed in!', true);
     // redirect after sign-in
-    location.replace('./home.html');
+    location.replace('./profile.html');
   }catch(err){
     const m = err?.message || String(err);
     msg(m);
