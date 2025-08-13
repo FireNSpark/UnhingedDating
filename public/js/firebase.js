@@ -29,7 +29,9 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
 // Persist auth across page loads/tabs (prevents login -> bounce back)
-await setPersistence(auth, browserLocalPersistence).catch(() => {});
+(async () => {
+  try { await setPersistence(auth, browserLocalPersistence); } catch (_) {}
+})();
 
 // Analytics can fail on http/local; that's fine
 try {
