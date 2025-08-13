@@ -139,3 +139,36 @@ saveBtn?.addEventListener('click', async (e) => {
     if (statusEl) statusEl.textContent = err?.message || "Couldn’t save.";
   }
 });
+// --- append below everything else ---
+document.addEventListener('DOMContentLoaded', () => {
+  const box      = document.getElementById('profileBox');
+  const emailOut = document.getElementById('email');
+  const nameInput= document.getElementById('displayName');
+  const saveBtn  = document.getElementById('save');
+  const statusEl = document.getElementById('status');
+
+  onAuthStateChanged(auth, (u) => {
+    if (u) {
+      if (box) box.style.display = 'block';
+      if (emailOut) emailOut.textContent = u.email || '—';
+      if (nameInput) nameInput.value = u.displayName || '';
+      if (statusEl) { statusEl.textContent = ''; statusEl.className = ''; }
+    } else {
+      if (statusEl) { statusEl.textContent = 'You’re signed out.'; statusEl.className = 'warn'; }
+    }
+  });
+
+  saveBtn?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const u = auth.currentUser;
+    if (!u) { if (statusEl) { statusEl.textContent = "You’re signed out."; statusEl.className = 'warn'; } return; }
+    const name = (nameInput?.value || '').trim();
+    if (!name) { if (statusEl) { statusEl.textContent = 'Enter a display name.'; statusEl.className = 'warn'; } return; }
+    try {
+      await updateProfile(u, { displayName: name });
+      if (statusEl) { statusEl.textContent = 'Saved.'; statusEl.className = 'ok'; }
+    } catch (err) {
+      if (statusEl) { statusEl.textContent = err?.message || 'Couldn’t save.'; statusEl.className = 'warn'; }
+    }
+  });
+});
