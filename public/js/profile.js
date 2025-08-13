@@ -49,7 +49,7 @@ saveBtn?.addEventListener("click", async () => {
   if (!name) { msg("Enter a display name.", false); return; }
   try {
     await updateProfile(u, { displayName: name });
-    msg("Saved.", true);
+    msg("Saved.", true);location.replace("./index.html"); // send them into the app
   } catch (e) {
     msg(e?.message || "Couldn't save.", false);
   }
