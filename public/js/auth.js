@@ -2,9 +2,14 @@
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  setPersistence,
+  browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { auth } from "./firebase.js";
+
+// Persist auth session so reloads don’t log out
+await setPersistence(auth, browserLocalPersistence).catch(() => {});
 
 // Elements
 const emailEl  = document.getElementById('email');
@@ -30,8 +35,7 @@ async function doSignIn(){
     const pw = passEl?.value || '';
     await signInWithEmailAndPassword(auth, em, pw);
     msg('Signed in!', true);
-    // login -> go straight to the app
-    location.replace('./home.html');
+    location.replace('./home.html'); // redirect to your main app page
   }catch(err){
     msg(err?.message || String(err));
   }
@@ -44,8 +48,7 @@ async function doCreate(){
     const pw = passEl?.value || '';
     await createUserWithEmailAndPassword(auth, em, pw);
     msg('Account created!', true);
-    // signup -> go set display name first
-    location.replace('./profile.html');
+    location.replace('./profile.html'); // new users go set username
   }catch(err){
     msg(err?.message || String(err));
   }
@@ -66,4 +69,3 @@ async function doForgot(){
 signinBtn?.addEventListener('click', doSignIn);
 createBtn?.addEventListener('click', doCreate);
 forgotBtn?.addEventListener('click', doForgot);
-```0
