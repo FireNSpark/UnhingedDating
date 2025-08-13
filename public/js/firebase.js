@@ -7,7 +7,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
-// ✅ Your real Firebase config
+// ✅ Your real Firebase config (from you)
 const firebaseConfig = {
   apiKey: "AIzaSyC4K7iCqvxTo6Gj5oIPsErF_vMDlhi0znE",
   authDomain: "unhinged-8c6da.firebaseapp.com",
@@ -18,20 +18,18 @@ const firebaseConfig = {
   measurementId: "G-QEEY24M17T"
 };
 
-// Guard: fail loudly if anything is missing
-for (const k of ["apiKey", "authDomain", "projectId", "appId"]) {
-  if (!firebaseConfig[k]) {
-    throw new Error(`[Firebase] Missing ${k} in firebaseConfig`);
-  }
+// Guard
+for (const k of ["apiKey","authDomain","projectId","appId"]) {
+  if (!firebaseConfig[k]) throw new Error(`[Firebase] Missing ${k} in firebaseConfig`);
 }
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-// ✅ Persistence (wrapped; no top-level await)
+// Persistence (wrapped; avoids top‑level await issues on some browsers)
 (function () {
   setPersistence(auth, browserLocalPersistence).catch(() => {});
 })();
 
-// Analytics can fail on http/local; that’s fine
-try { getAnalytics(app); } catch (_) { /* ignore */ }
+// Optional analytics (silently ignore if not available)
+try { getAnalytics(app); } catch (_) {}
