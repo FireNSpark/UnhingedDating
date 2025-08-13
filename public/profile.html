@@ -1,42 +1,34 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Unhinged — Profile</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Profile • UNHINGED</title>
+<link rel="stylesheet" href="./style.css">
 <link rel="icon" href="/favicon.ico">
 <style>
-  :root{--red:#E11D2A;--ink:#0f0f12;--char:#16171d;--muted:#cfd0de;}
-  *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0e0e12,#141418);color:#fff;font:500 16px/1.5 Inter,system-ui,Segoe UI,Roboto,Arial}
-  .wrap{max-width:980px;margin:0 auto;padding:20px}
-  header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
-  .brand{font-weight:1000;letter-spacing:.02em} .brand b{color:var(--red)}
-  .card{background:#12131a;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;box-shadow:0 14px 36px rgba(0,0,0,.25);margin-top:18px}
-  .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-  input{width:100%;max-width:360px;background:#0c0c0c;border:1px solid #2a2a2a;color:#fff;padding:12px;border-radius:10px}
-  button{appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer}
-  .primary{background:var(--red);color:#fff}
-  .ghost{background:#202028;color:#fff;border:1px solid rgba(255,255,255,.1)}
-  .muted{color:#bbb}
-  .ok{color:#7CFF7C}.warn{color:#F6C31C}
+  :root{--red:#E11D2A;--ink:#0c0c0c}
+  .wrap{max-width:720px;margin:40px auto;padding:0 16px}
+  header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+  .muted{opacity:.7}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  button.primary{background:var(--red);color:#fff;border:0;padding:10px 14px;border-radius:8px;cursor:pointer}
+  button.ghost{background:transparent;border:1px solid #ccc;padding:10px 14px;border-radius:8px;cursor:pointer}
+  #status.ok{color:green} #status.warn{color:#b00}
 </style>
-<script type="module" src="/public/js/profile.js"></script>
 </head>
 <body>
-  <header>
-    <div class="brand">UN<b>HINGED</b></div>
-    <nav class="row">
-      <a class="ghost" style="padding:10px 14px;text-decoration:none" href="/index.html">Home</a>
-      <button id="signOut" class="ghost">Sign out</button>
-    </nav>
+  <header class="wrap">
+    <strong>UNHINGED</strong>
+    <button id="logout" class="ghost">Log out</button>
   </header>
 
   <main class="wrap">
-    <div class="card">
-      <h2 style="margin:0 0 6px">Your Profile</h2>
-      <div id="status" class="muted">Loading…</div>
+    <h1>Profile</h1>
+    <p id="status" class="muted">Loading…</p>
 
-      <div class="row" style="margin-top:16px">
+    <div id="profileBox" style="display:none">
+      <div class="row">
         <input id="displayName" placeholder="Display name">
         <button id="save" class="primary">Save</button>
         <button id="deleteAcct" class="ghost">Delete account</button>
@@ -47,5 +39,8 @@
       </div>
     </div>
   </main>
+
+  <!-- Fixed script path/module -->
+  <script type="module" src="./js/profile.js"></script>
 </body>
 </html>
