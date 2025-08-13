@@ -26,6 +26,7 @@ function msg(t, ok=false){
 
 // Actions
 async function doSignIn(){
+  alert('doSignIn running'); // TEMP probe
   try{
     msg('Signing in…');
     const em = (emailEl?.value || '').trim();
