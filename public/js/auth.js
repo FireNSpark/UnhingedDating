@@ -30,11 +30,10 @@ async function doSignIn(){
     const pw = passEl?.value || '';
     await signInWithEmailAndPassword(auth, em, pw);
     msg('Signed in!', true);
-    console.log('AUTH: redirect to home');        // <-- added
+    // login -> go straight to the app
     location.replace('./home.html');
   }catch(err){
-    const m = err?.message || String(err);
-    msg(m);
+    msg(err?.message || String(err));
   }
 }
 
@@ -45,11 +44,10 @@ async function doCreate(){
     const pw = passEl?.value || '';
     await createUserWithEmailAndPassword(auth, em, pw);
     msg('Account created!', true);
-    console.log('AUTH: redirect to home');        // <-- added
-    location.replace('./home.html');
+    // signup -> go set display name first
+    location.replace('./profile.html');
   }catch(err){
-    const m = err?.message || String(err);
-    msg(m);
+    msg(err?.message || String(err));
   }
 }
 
@@ -60,8 +58,7 @@ async function doForgot(){
     await sendPasswordResetEmail(auth, em);
     msg('Reset email sent', true);
   }catch(err){
-    const m = err?.message || String(err);
-    msg(m);
+    msg(err?.message || String(err));
   }
 }
 
@@ -69,3 +66,4 @@ async function doForgot(){
 signinBtn?.addEventListener('click', doSignIn);
 createBtn?.addEventListener('click', doCreate);
 forgotBtn?.addEventListener('click', doForgot);
+```0
