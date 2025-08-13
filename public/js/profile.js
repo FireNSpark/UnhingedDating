@@ -117,3 +117,25 @@ forgotBtn?.addEventListener("click", (e)=>{ e.preventDefault(); doReset(); });
     if(e.key === "Enter") doSignIn();
   });
 });
+// Save display name (append at end of file)
+import { updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const saveBtn   = document.getElementById('save');
+const nameInput = document.getElementById('displayName');
+const statusEl  = document.getElementById('status');
+
+saveBtn?.addEventListener('click', async (e) => {
+  e.preventDefault();
+  const u = auth.currentUser;
+  if (!u) { if (statusEl) statusEl.textContent = "You’re signed out. Log in again."; return; }
+
+  const name = (nameInput?.value || '').trim();
+  if (!name) { if (statusEl) statusEl.textContent = "Enter a display name."; return; }
+
+  try {
+    await updateProfile(u, { displayName: name });
+    if (statusEl) statusEl.textContent = "Saved.";
+  } catch (err) {
+    if (statusEl) statusEl.textContent = err?.message || "Couldn’t save.";
+  }
+});
