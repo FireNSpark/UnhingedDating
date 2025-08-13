@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,31 +15,27 @@
     .btn-primary { background:#E11D2A; color:#fff; border:0; border-radius:12px; padding:12px 14px; cursor:pointer; font-weight:800; }
     .btn-ghost { background:transparent; color:#fff; border:1px solid #2a2a2a; border-radius:12px; padding:12px 14px; cursor:pointer; }
     .forgot { display:inline-block; margin-top:10px; color:#cfcfe6; }
-    #status { min-height:20px; margin-top:10px; }
-    #status.ok { color:#3ad66e } #status.warn { color:#ff6b6b }
+    #msg { min-height:20px; margin-top:10px; }
+    #msg.ok { color:#3ad66e } #msg.warn { color:#ff6b6b }
   </style>
 </head>
 <body>
   <main class="wrap">
     <div class="card">
-      <h1>Welcome back</h1>
+      <h1>Welcome back</h1><label for="email">Email</label>
+  <input type="email" id="email" placeholder="you@email.com" />
 
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="you@email.com" />
+  <label for="password">Password</label>
+  <input type="password" id="password" placeholder="Password" />
 
-      <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Password" />
+  <div class="row">
+    <button class="btn-primary" id="signin">Sign In</button>
+    <button class="btn-ghost" id="create">Create account</button>
+  </div>
 
-      <div class="row">
-        <button class="btn-primary" id="signin">Sign In</button>
-        <button class="btn-ghost" id="create">Create account</button>
-      </div>
+  <a href="#" class="forgot" id="forgot">Forgot?</a>
+  <p id="msg"></p>
+</div>
 
-      <a href="#" class="forgot" id="forgot">Forgot?</a>
-      <p id="status"></p>
-    </div>
-  </main>
-
-  <script type="module" src="js/auth.js"></script>
-</body>
+  </main>  <script type="module" src="js/auth.js"></script></body>
 </html>
