@@ -66,7 +66,17 @@ This is current index file......<!DOCTYPE html><html lang="en">
 }
 </style>
 
-</head>  
+</head> 
+  <script type="module">
+  import { auth } from './js/firebase.js';
+  import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+  onAuthStateChanged(auth, (u) => {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#111;color:#fff;padding:6px 10px;z-index:9999;font:12px system-ui';
+    t.textContent = `HOME loaded — user: ${u ? (u.email || u.uid) : 'null'}`;
+    document.body.prepend(t);
+  });
+</script>
 <body>  
   <header>  
     <div class="wrap">  
