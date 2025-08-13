@@ -1,87 +1,51 @@
-// public/js/auth.js
-import { auth } from "./firebase.js";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login • UNHINGED</title>
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    body { background:#0b0b0f; color:#fff; margin:0; }
+    .wrap{ max-width:460px; margin:40px auto; padding:0 16px; }
+    .card{ background:#12131a; border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:18px; box-shadow:0 10px 28px rgba(0,0,0,.35); }
+    h1{ margin:0 0 12px; font-size:24px; }
+    label{ display:block; margin:10px 0 6px; color:#ddd; font-size:14px; }
+    input{ width:100%; padding:12px; border-radius:10px; border:1px solid #2a2a2a; background:#0c0c0c; color:#fff; }
+    .row{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+    .btn-primary{ background:#E11D2A; color:#fff; border:0; border-radius:12px; padding:12px 14px; cursor:pointer; font-weight:800; }
+    .btn-ghost{ background:transparent; color:#fff; border:1px solid #2a2a2a; border-radius:12px; padding:12px 14px; cursor:pointer; }
+    #status{ min-height:20px; margin-top:10px; }
+    #status.ok{ color:#3ad66e } 
+    #status.warn{ color:#ff6b6b }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="card">
+      <h1>Welcome back</h1>
 
-// ---- helpers ----
-const $ = (id) => document.getElementById(id);
-const emailEl = $("email");
-const passEl  = $("password");
-const createBtn = $("create");
-const signInBtn = $("signin");
-const forgotBtn = $("forgot");
-const statusEl = $("status");
+      <!-- IDs below match auth.js exactly -->
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="you@email.com" required>
 
-function msg(text, ok=false){
-  if(!statusEl) return;
-  statusEl.textContent = text;
-  statusEl.className = ok ? "ok" : "warn";
-}
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Password" required minlength="6">
 
-function busy(on){
-  [createBtn, signInBtn, forgotBtn].forEach(b => b && (b.disabled = on));
-}
+      <div class="row">
+        <button class="btn-primary" id="signin" type="button">Sign In</button>
+        <button class="btn-ghost" id="create" type="button">Create account</button>
+        <button class="btn-ghost" id="forgot" type="button">Forgot?</button>
+      </div>
 
-// ---- actions ----
-async function doCreate(){
-  busy(true); msg("Creating account…");
-  try{
-    const em = emailEl.value.trim();
-    const pw = passEl.value;
-    await createUserWithEmailAndPassword(auth, em, pw);
-    msg("Account created. Redirecting…", true);
-    location.assign("./profile.html");
-  }catch(e){
-    msg(e?.message || "Couldn’t create account");
-  }finally{ busy(false); }
-}
+      <p id="status"></p>
 
-async function doSignIn(){
-  busy(true); msg("Signing in…");
-  try{
-    const em = emailEl.value.trim();
-    const pw = passEl.value;
-    await signInWithEmailAndPassword(auth, em, pw);
-    msg("Signed in. Redirecting…", true);
-    location.assign("./profile.html");
-  }catch(e){
-    msg(e?.message || "Sign-in failed");
-  }finally{ busy(false); }
-}
+      <p style="margin-top:10px;opacity:.8;font-size:13px">No account? <a href="./signup.html" style="text-decoration:underline">Create one</a></p>
+    </div>
+  </main>
 
-async function doReset(){
-  busy(true); msg("Sending reset…");
-  try{
-    const em = emailEl.value.trim();
-    if(!em) throw new Error("Enter your email to reset.");
-    await sendPasswordResetEmail(auth, em);
-    msg("Password reset email sent.", true);
-  }catch(e){
-    msg(e?.message || "Couldn’t send reset");
-  }finally{ busy(false); }
-}
-
-// ---- wiring ----
-createBtn?.addEventListener("click", doCreate);
-signInBtn?.addEventListener("click", doSignIn);
-forgotBtn?.addEventListener("click", doReset);
-
-// Optional: allow Enter key to submit
-[emailEl, passEl].forEach(el=>{
-  el?.addEventListener("keydown", (e)=>{
-    if(e.key === "Enter") doSignIn();
-  });
-});
-
-// Keep UI in sync
-onAuthStateChanged(auth, (u)=>{
-  if(u){
-    msg(`Signed in as ${u.email}`, true);
-  }else{
-    msg("Not signed in.");
-  }
-});
+  <!-- IMPORTANT: Initialize Firebase BEFORE auth.js -->
+  <script type="module" src="./js/firebase.js"></script>
+  <script type="module" src="./js/auth.js"></script>
+</body>
+</html>
