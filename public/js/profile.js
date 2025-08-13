@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   onAuthStateChanged,
+  updateProfile, // <-- add this
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const $ = (id) => document.getElementById(id);
