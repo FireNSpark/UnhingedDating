@@ -1,97 +1,74 @@
 // public/js/auth.js
-import { auth } from "./firebase.js";
+
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-  onAuthStateChanged,
+  sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { auth } from "./firebase.js";
 
-// --- element refs (match login.html) ---
-const $ = (id) => document.getElementById(id);
-const emailEl   = $("email");
-const passEl    = $("password");
-const signInBtn = $("signin");
-const createBtn = $("create");
-const forgotBtn = $("forgot");
-const statusEl  = $("status"); // message area
+// Elements
+const emailEl  = document.getElementById('email');
+const passEl   = document.getElementById('password');
+const statusEl = document.getElementById('status');
 
-// --- helpers ---
-function msg(text = "", ok = false) {
-  if (!statusEl) return;
-  statusEl.textContent = text;
-  statusEl.className = ok ? "ok" : "warn";
+const signinBtn = document.getElementById('signin');
+const createBtn = document.getElementById('create');
+const forgotBtn = document.getElementById('forgot');
+
+// Helpers
+function msg(t, ok=false){
+  if(!statusEl) return;
+  statusEl.textContent = t || '';
+  statusEl.className = ok ? 'ok' : 'warn';
 }
-function busy(on = true) {
-  [signInBtn, createBtn, forgotBtn].forEach((b) => b && (b.disabled = on));
-}
-function goProfile() {
-  // relative path so it works on subpath hosting
-  location.replace("./profile.html");
-}
-function norm(code) {
-  switch (code) {
-    case "auth/invalid-email": return "Invalid email format.";
-    case "auth/missing-password": return "Enter your password.";
-    case "auth/weak-password": return "Password must be 6+ chars.";
-    case "auth/email-already-in-use": return "Account exists. Try Sign in.";
-    case "auth/invalid-credential":
-    case "auth/wrong-password": return "Email or password is incorrect.";
-    case "auth/user-not-found": return "No account for that email.";
-    case "auth/network-request-failed": return "Network error. Check connection.";
-    default: return "Couldn’t complete the request.";
+
+// Actions
+async function doSignIn(){
+  
+  try{
+    msg('Signing in…');
+    const em = (emailEl?.value || '').trim();
+    const pw = passEl?.value || '';
+    await signInWithEmailAndPassword(auth, em, pw);
+    msg('Signed in!', true);
+    location.replace('./profile.html');
+  }catch(err){
+    const m = err?.message || String(err);
+    msg(m);
+    alert('Sign-in error: ' + m); // <-- show the exact Firebase error
   }
 }
 
-// --- auto-redirect if already signed in ---
-onAuthStateChanged(auth, (u) => { if (u) goProfile(); });
-
-// --- actions ---
-async function doSignIn() {
-  const email = (emailEl?.value || "").trim();
-  const pass  = passEl?.value || "";
-  if (!email || !pass) { msg("Email & password required."); return; }
-  busy(true); msg("Signing in…");
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-    msg("", true);
-    goProfile();
-  } catch (e) {
-    msg(norm(e?.code));
-  } finally { busy(false); }
+async function doCreate(){
+  try{
+    msg('Creating account…');
+    const em = (emailEl?.value || '').trim();
+    const pw = passEl?.value || '';
+    await createUserWithEmailAndPassword(auth, em, pw);
+    msg('Account created!', true);
+    location.assign('./profile.html');
+  }catch(err){
+    const m = err?.message || String(err);
+    msg(m);
+    alert('Create error: ' + m); // TEMP
+  }
 }
 
-async function doCreate() {
-  const email = (emailEl?.value || "").trim();
-  const pass  = passEl?.value || "";
-  if (!email || !pass) { msg("Email & password required."); return; }
-  busy(true); msg("Creating account…");
-  try {
-    await createUserWithEmailAndPassword(auth, email, pass);
-    msg("", true);
-    goProfile();
-  } catch (e) {
-    msg(norm(e?.code));
-  } finally { busy(false); }
+async function doForgot(){
+  try{
+    const em = (emailEl?.value || '').trim();
+    if(!em){ msg('Enter your email first'); return; }
+    await sendPasswordResetEmail(auth, em);
+    msg('Reset email sent', true);
+  }catch(err){
+    const m = err?.message || String(err);
+    msg(m);
+    alert('Reset error: ' + m); // TEMP
+  }
 }
 
-async function doReset() {
-  const email = (emailEl?.value || "").trim();
-  if (!email) { msg("Enter your email first."); return; }
-  busy(true); msg("Sending reset…");
-  try {
-    await sendPasswordResetEmail(auth, email);
-    msg("Reset email sent.", true);
-  } catch (e) {
-    msg(norm(e?.code));
-  } finally { busy(false); }
-}
-
-// --- wiring ---
-signInBtn?.addEventListener("click", (e) => { e.preventDefault(); doSignIn(); });
-createBtn?.addEventListener("click", (e) => { e.preventDefault(); doCreate(); });
-forgotBtn?.addEventListener("click", (e) => { e.preventDefault(); doReset(); });
-
-[emailEl, passEl].forEach((el) => {
-  el?.addEventListener("keydown", (e) => { if (e.key === "Enter") doSignIn(); });
-});
+// Wire up
+signinBtn?.addEventListener('click', doSignIn);
+createBtn?.addEventListener('click', doCreate);
+forgotBtn?.addEventListener('click', doForgot);
