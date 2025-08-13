@@ -50,7 +50,7 @@ saveBtn?.addEventListener("click", async () => {
   try {
     await updateProfile(u, { displayName: name });
     msg("Saved.", true);
-    location.replace("./home.html"); // send them into the app
+    location.replace("./home.html"); // go to main site
   } catch (e) {
     msg(e?.message || "Couldn't save.", false);
   }
