@@ -31,7 +31,7 @@ async function doSignIn(){
     await signInWithEmailAndPassword(auth, em, pw);
     msg('Signed in!', true);
     // redirect after sign-in
-    location.replace('./profile.html');
+    location.replace('./home.html');
   }catch(err){
     const m = err?.message || String(err);
     msg(m);
@@ -45,7 +45,7 @@ async function doCreate(){
     const pw = passEl?.value || '';
     await createUserWithEmailAndPassword(auth, em, pw);
     msg('Account created!', true);
-    location.replace('./profile.html');
+    location.replace('./home.html');
   }catch(err){
     const m = err?.message || String(err);
     msg(m);
