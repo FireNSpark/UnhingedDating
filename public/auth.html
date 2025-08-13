@@ -1,52 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UNHINGED — Sign In</title>
-  <meta name="theme-color" content="#E11D2A" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in to Unhinged</title>
+  <link rel="stylesheet" href="styles.css" />
   <style>
-    :root{--red:#E11D2A;--ink:#0f0f12;--card:#17181d;--line:#262833}
-    *{box-sizing:border-box} body{margin:0;background:#0f0f12;color:#fff;font:500 16px/1.5 Inter,system-ui,Segoe UI}
-    .wrap{max-width:720px;margin:0 auto;padding:28px}
-    h1{font-size:38px;margin:24px 0 16px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
-    label{display:block;margin:10px 0 6px;color:#e8e8e8;font-size:14px}
-    input{width:100%;padding:14px;border-radius:12px;border:1px solid #2a2d36;background:#101115;color:#fff;outline:none}
-    input:focus{border-color:#f6c31c;box-shadow:0 0 0 3px #f6c31c33}
-    .row{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
-    .btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer}
-    .primary{background:var(--red);color:#fff}
-    .ghost{background:#20222a;color:#fff;border:1px solid #2a2d36}
-    a.small{color:#cfd0de;text-decoration:none;font-size:14px;margin-left:8px}
-    .status{margin-top:10px;font-size:13px;color:#cfd0de}
-    .ok{color:#7CFF7C}.warn{color:#ffd166}
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background-color: #111;
+      border-radius: 12px;
+      padding: 28px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+    }
+    .card h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .card input {
+      width: 100%;
+      max-width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .row button {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background-color: red;
+      color: #fff;
+    }
+    .btn-ghost {
+      background-color: transparent;
+      border: 1px solid #fff;
+      color: #fff;
+    }
+    .forgot {
+      display: block;
+      text-align: right;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ccc;
+      text-decoration: none;
+    }
+    .forgot:hover {
+      text-decoration: underline;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 480px) {
+      .wrap {
+        padding: 16px;
+      }
+      .card {
+        padding: 16px;
+        border-radius: 12px;
+      }
+      .row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .card input {
+        padding: 12px;
+        font-size: 16px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>Sign in to Unhinged</h1>
-
     <div class="card">
-      <label for="email">Email</label>
-      <input id="email" type="email" autocomplete="email" placeholder="you@email.com" />
-
-      <label for="password">Password</label>
-      <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" />
-
+      <h2>Sign in to Unhinged</h2>
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
       <div class="row">
-        <button id="signInBtn" class="btn ghost">Sign In</button>
-        <button id="signUpBtn" class="btn primary">Create account</button>
-        <a id="forgotBtn" href="#" class="small">Forgot?</a>
+        <button class="btn-primary" id="signInBtn">Sign In</button>
+        <button class="btn-ghost" id="createAccountBtn">Create account</button>
       </div>
-
-      <div id="authStatus" class="status">Ready.</div>
+      <a href="#" class="forgot">Forgot?</a>
+      <p id="status" style="margin-top: 10px; font-size: 14px;"></p>
     </div>
   </div>
 
-  <!-- Firebase config/module you already have -->
   <script type="module" src="js/firebase.js"></script>
-  <!-- Auth wiring (uses the config above) -->
   <script type="module" src="js/auth.js"></script>
 </body>
 </html>
