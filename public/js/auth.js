@@ -1,6 +1,6 @@
 // public/js/auth.js
 // Uses your existing Firebase init at /public/js/firebase.js
-import { auth } from "/public/js/firebase.js";
+import { auth } from "./firebase.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -42,7 +42,7 @@ function normalizeError(code){
   }
 }
 
-// Auto‑redirect if already signed in
+// Autoâ€‘redirect if already signed in
 onAuthStateChanged(auth, (u) => {
   if (u) goProfile();
 });
@@ -52,7 +52,7 @@ async function doCreate() {
   const email = (emailEl?.value || "").trim();
   const pass  = passEl?.value || "";
   if (!email || !pass){ setMsg("Email & password required.", "warn"); return; }
-  busy(true); setMsg("Creating account…");
+  busy(true); setMsg("Creating accountâ€¦");
   try{
     await createUserWithEmailAndPassword(auth, email, pass);
     setMsg(""); goProfile();
@@ -65,7 +65,7 @@ async function doSignIn() {
   const email = (emailEl?.value || "").trim();
   const pass  = passEl?.value || "";
   if (!email || !pass){ setMsg("Email & password required.", "warn"); return; }
-  busy(true); setMsg("Signing in…");
+  busy(true); setMsg("Signing inâ€¦");
   try{
     await signInWithEmailAndPassword(auth, email, pass);
     setMsg(""); goProfile();
@@ -77,7 +77,7 @@ async function doSignIn() {
 async function doReset() {
   const email = (emailEl?.value || "").trim();
   if (!email){ setMsg("Enter your email first.", "warn"); return; }
-  busy(true); setMsg("Sending reset link…");
+  busy(true); setMsg("Sending reset linkâ€¦");
   try{
     await sendPasswordResetEmail(auth, email);
     setMsg("Check your inbox for the reset link.", "ok");
