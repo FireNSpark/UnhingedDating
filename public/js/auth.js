@@ -35,7 +35,9 @@ async function doSignIn(){
     msg('Signed in!', true);
     location.assign('./profile.html');
   }catch(err){
-    msg(err?.message || 'Sign-in failed');
+    const m = err?.message || String(err);
+    msg(m);
+    alert('Sign-in error: ' + m); // <-- show the exact Firebase error
   }
 }
 
@@ -48,7 +50,9 @@ async function doCreate(){
     msg('Account created!', true);
     location.assign('./profile.html');
   }catch(err){
-    msg(err?.message || 'Couldn’t create account');
+    const m = err?.message || String(err);
+    msg(m);
+    alert('Create error: ' + m); // TEMP
   }
 }
 
@@ -59,7 +63,9 @@ async function doForgot(){
     await sendPasswordResetEmail(auth, em);
     msg('Reset email sent', true);
   }catch(err){
-    msg(err?.message || 'Couldn’t send reset');
+    const m = err?.message || String(err);
+    msg(m);
+    alert('Reset error: ' + m); // TEMP
   }
 }
 
