@@ -42,7 +42,12 @@ function normalizeError(code){
 }
 
 onAuthStateChanged(auth, (u) => {
-  if (u) goProfile();
+  if (!u) {
+    // If you want to bounce signed‑out users away from the profile page, use your auth page:
+    // location.replace('./login.html'); // or './auth.html' if that’s your filename
+    return; // <- don’t redirect on the initial null to avoid the loop
+  }
+  // user is signed in — show the page UI (no redirect here)
 });
 
 async function doCreate() {
