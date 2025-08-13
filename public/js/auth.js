@@ -3,7 +3,8 @@
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { auth } from "./firebase.js";
 
@@ -23,20 +24,28 @@ function msg(t, ok=false){
   statusEl.className = ok ? 'ok' : 'warn';
 }
 
+// Wait for auth state before redirecting
+function redirectToProfileWhenReady(){
+  onAuthStateChanged(auth, (user) => {
+    if(user) {
+      location.replace('./profile.html');
+    }
+  });
+}
+
 // Actions
 async function doSignIn(){
-  
   try{
     msg('Signing in…');
     const em = (emailEl?.value || '').trim();
     const pw = passEl?.value || '';
     await signInWithEmailAndPassword(auth, em, pw);
     msg('Signed in!', true);
-    location.replace('./profile.html');
+    redirectToProfileWhenReady();
   }catch(err){
     const m = err?.message || String(err);
     msg(m);
-    alert('Sign-in error: ' + m); // <-- show the exact Firebase error
+    alert('Sign-in error: ' + m);
   }
 }
 
@@ -47,11 +56,11 @@ async function doCreate(){
     const pw = passEl?.value || '';
     await createUserWithEmailAndPassword(auth, em, pw);
     msg('Account created!', true);
-    location.assign('./profile.html');
+    redirectToProfileWhenReady();
   }catch(err){
     const m = err?.message || String(err);
     msg(m);
-    alert('Create error: ' + m); // TEMP
+    alert('Create error: ' + m);
   }
 }
 
@@ -64,7 +73,7 @@ async function doForgot(){
   }catch(err){
     const m = err?.message || String(err);
     msg(m);
-    alert('Reset error: ' + m); // TEMP
+    alert('Reset error: ' + m);
   }
 }
 
