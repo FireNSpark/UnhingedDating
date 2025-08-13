@@ -1,51 +1,51 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Login • UNHINGED</title>
-  <link rel="stylesheet" href="./style.css">
-  <style>
-    body { background:#0b0b0f; color:#fff; margin:0; }
-    .wrap{ max-width:460px; margin:40px auto; padding:0 16px; }
-    .card{ background:#12131a; border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:18px; box-shadow:0 10px 28px rgba(0,0,0,.35); }
-    h1{ margin:0 0 12px; font-size:24px; }
-    label{ display:block; margin:10px 0 6px; color:#ddd; font-size:14px; }
-    input{ width:100%; padding:12px; border-radius:10px; border:1px solid #2a2a2a; background:#0c0c0c; color:#fff; }
-    .row{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
-    .btn-primary{ background:#E11D2A; color:#fff; border:0; border-radius:12px; padding:12px 14px; cursor:pointer; font-weight:800; }
-    .btn-ghost{ background:transparent; color:#fff; border:1px solid #2a2a2a; border-radius:12px; padding:12px 14px; cursor:pointer; }
-    #status{ min-height:20px; margin-top:10px; }
-    #status.ok{ color:#3ad66e } 
-    #status.warn{ color:#ff6b6b }
-  </style>
-</head>
-<body>
-  <main class="wrap">
-    <div class="card">
-      <h1>Welcome back</h1>
+// public/js/auth.js
 
-      <!-- IDs below match auth.js exactly -->
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="you@email.com" required>
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+import { auth } from "./firebase.js";
 
-      <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Password" required minlength="6">
+const emailEl = document.getElementById('email');
+const passEl = document.getElementById('password');
+const statusEl = document.getElementById('status');
 
-      <div class="row">
-        <button class="btn-primary" id="signin" type="button">Sign In</button>
-        <button class="btn-ghost" id="create" type="button">Create account</button>
-        <button class="btn-ghost" id="forgot" type="button">Forgot?</button>
-      </div>
+const signinBtn = document.getElementById('signin');
+const createBtn = document.getElementById('create');
+const forgotBtn = document.getElementById('forgot');
 
-      <p id="status"></p>
+async function doSignIn() {
+  alert('doSignIn() function called'); // Debug probe
+  statusEl.textContent = '';
+  try {
+    const userCred = await signInWithEmailAndPassword(auth, emailEl.value, passEl.value);
+    statusEl.textContent = 'Logged in!';
+    statusEl.className = 'ok';
+    window.location.href = './profile.html';
+  } catch (err) {
+    statusEl.textContent = err.message;
+    statusEl.className = 'warn';
+  }
+}
 
-      <p style="margin-top:10px;opacity:.8;font-size:13px">No account? <a href="./signup.html" style="text-decoration:underline">Create one</a></p>
-    </div>
-  </main>
+async function doCreate() {
+  statusEl.textContent = '';
+  try {
+    const userCred = await createUserWithEmailAndPassword(auth, emailEl.value, passEl.value);
+    statusEl.textContent = 'Account created!';
+    statusEl.className = 'ok';
+    window.location.href = './profile.html';
+  } catch (err) {
+    statusEl.textContent = err.message;
+    statusEl.className = 'warn';
+  }
+}
 
-  <!-- IMPORTANT: Initialize Firebase BEFORE auth.js -->
-  <script type="module" src="./js/firebase.js"></script>
-  <script type="module" src="./js/auth.js"></script>
-</body>
-</html>
+async function doForgot() {
+  statusEl.textContent = '';
+  try {
+    await sendPasswordResetEmail(auth, emailEl.value);
+    statusEl.textContent = 'Reset email sent!';
+    statusEl.className = 'ok';
+  } catch (err) {
+    statusEl.textContent = err.message;
+    statusEl.className = 'warn';
+  }
+}
