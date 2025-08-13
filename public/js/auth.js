@@ -1,99 +1,53 @@
-// public/js/auth.js
-// Uses your existing Firebase init at /public/js/firebase.js
+// public/js/profile.js
 import { auth } from "./firebase.js";
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
   onAuthStateChanged,
+  signOut,
+  updateProfile,
+  deleteUser,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// ---- helpers ----
-const $ = (id) => document.getElementById(id);
-const emailEl = $("email");
-const passEl  = $("password");
-const createBtn = $("create");
-const signInBtn = $("signin");
-const forgotBtn = $("forgot");
-const msg = $("msg");
+const $ = (id)=>document.getElementById(id);
+const statusEl = $("status"), nameEl = $("displayName"), emailEl = $("email");
 
-function setMsg(t, type="") {
-  if (!msg) return;
-  msg.textContent = t || "";
-  msg.className = type; // you can style .ok / .warn if you want
+function msg(t, ok=false){
+  if(statusEl){ statusEl.textContent=t; statusEl.className = ok ? "ok" : "warn"; }
 }
-function busy(on=true) {
-  [createBtn, signInBtn, forgotBtn].forEach(b => b && (b.disabled = on));
-}
-function goProfile(){
-  // IMPORTANT: explicit file to avoid /profile (no extension) 404
-  location.assign("/profile.html");
-}
-function normalizeError(code){
-  switch(code){
-    case "auth/invalid-email": return "That email looks wrong.";
-    case "auth/missing-password": return "Enter a password.";
-    case "auth/weak-password": return "Password must be 6+ characters.";
-    case "auth/email-already-in-use": return "Account already exists. Try Sign in.";
-    case "auth/invalid-credential":
-    case "auth/wrong-password": return "Email or password is incorrect.";
-    case "auth/user-not-found": return "No account for that email.";
-    default: return "Something went sideways. Try again.";
+
+onAuthStateChanged(auth, (u)=>{
+  if(!u){
+    msg("You’re signed out.");
+    $("profileBox") && ($("profileBox").style.display = "none");
+    return;
   }
-}
-
-// Autoâ€‘redirect if already signed in
-onAuthStateChanged(auth, (u) => {
-  if (u) goProfile();
+  $("profileBox") && ($("profileBox").style.display = "block");
+  emailEl && (emailEl.textContent = u.email || "—");
+  nameEl && (nameEl.value = u.displayName || "");
+  msg("Loaded.", true);
 });
 
-// ---- actions ----
-async function doCreate() {
-  const email = (emailEl?.value || "").trim();
-  const pass  = passEl?.value || "";
-  if (!email || !pass){ setMsg("Email & password required.", "warn"); return; }
-  busy(true); setMsg("Creating accountâ€¦");
+$("logout")?.addEventListener("click", async ()=>{
   try{
-    await createUserWithEmailAndPassword(auth, email, pass);
-    setMsg(""); goProfile();
-  }catch(err){
-    setMsg(normalizeError(err?.code), "warn");
-  }finally{ busy(false); }
-}
+    await signOut(auth);
+    location.replace("./auth.html");
+  }catch(e){ msg("Couldn’t sign out."); }
+});
 
-async function doSignIn() {
-  const email = (emailEl?.value || "").trim();
-  const pass  = passEl?.value || "";
-  if (!email || !pass){ setMsg("Email & password required.", "warn"); return; }
-  busy(true); setMsg("Signing inâ€¦");
+$("save")?.addEventListener("click", async ()=>{
+  const u = auth.currentUser;
+  if(!u) return;
   try{
-    await signInWithEmailAndPassword(auth, email, pass);
-    setMsg(""); goProfile();
-  }catch(err){
-    setMsg(normalizeError(err?.code), "warn");
-  }finally{ busy(false); }
-}
+    await updateProfile(u, { displayName: nameEl.value.trim() });
+    msg("Saved.", true);
+  }catch(e){ msg("Couldn’t save."); }
+});
 
-async function doReset() {
-  const email = (emailEl?.value || "").trim();
-  if (!email){ setMsg("Enter your email first.", "warn"); return; }
-  busy(true); setMsg("Sending reset linkâ€¦");
+$("deleteAcct")?.addEventListener("click", async ()=>{
+  const u = auth.currentUser;
+  if(!u) return;
+  if(!confirm("Delete your account? This cannot be undone.")) return;
   try{
-    await sendPasswordResetEmail(auth, email);
-    setMsg("Check your inbox for the reset link.", "ok");
-  }catch(err){
-    setMsg(normalizeError(err?.code), "warn");
-  }finally{ busy(false); }
-}
-
-// ---- wire up ----
-createBtn?.addEventListener("click", (e)=>{ e.preventDefault(); doCreate(); });
-signInBtn?.addEventListener("click", (e)=>{ e.preventDefault(); doSignIn(); });
-forgotBtn?.addEventListener("click", (e)=>{ e.preventDefault(); doReset(); });
-
-// Optional: allow Enter key to submit
-[emailEl, passEl].forEach(el=>{
-  el?.addEventListener("keydown", (e)=>{
-    if(e.key === "Enter") doSignIn();
-  });
+    await deleteUser(u);
+    location.replace("./auth.html");
+  }catch(e){ msg("Couldn’t delete (re-auth may be required)."); }
 });
