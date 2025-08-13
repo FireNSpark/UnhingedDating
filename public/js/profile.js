@@ -41,13 +41,20 @@ function normalizeError(code){
   }
 }
 
+let first = true;
 onAuthStateChanged(auth, (u) => {
-  if (!u) {
-    // If you want to bounce signed‑out users away from the profile page, use your auth page:
-    // location.replace('./login.html'); // or './auth.html' if that’s your filename
-    return; // <- don’t redirect on the initial null to avoid the loop
+  const box = document.getElementById('profileBox');
+  const emailOut = document.getElementById('email');
+
+  if (u) {
+    if (box) box.style.display = 'block';
+    if (emailOut) emailOut.textContent = u.email || '—';
+    setMsg("", true);
+  } else if (!first) {
+    // only redirect after the initial null to avoid the loop
+    location.replace('./auth.html'); // or './login.html' if that’s your filename
   }
-  // user is signed in — show the page UI (no redirect here)
+  first = false;
 });
 
 async function doCreate() {
