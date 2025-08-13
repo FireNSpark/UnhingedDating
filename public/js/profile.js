@@ -14,7 +14,7 @@ const passEl  = $("password");
 const createBtn = $("create");
 const signInBtn = $("signin");
 const forgotBtn = $("forgot");
-const msg = $("msg");
+const msg = $("status"); // matches <p id="status"> in profile.html;
 
 function setMsg(t, type="") {
   if (!msg) return;
