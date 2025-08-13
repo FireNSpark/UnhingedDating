@@ -1,10 +1,8 @@
 // public/js/auth.js
-
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-  onAuthStateChanged
+  sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { auth } from "./firebase.js";
 
@@ -17,20 +15,11 @@ const signinBtn = document.getElementById('signin');
 const createBtn = document.getElementById('create');
 const forgotBtn = document.getElementById('forgot');
 
-// Helpers
+// Helper
 function msg(t, ok=false){
   if(!statusEl) return;
   statusEl.textContent = t || '';
   statusEl.className = ok ? 'ok' : 'warn';
-}
-
-// Wait for auth state before redirecting
-function redirectToProfileWhenReady(){
-  onAuthStateChanged(auth, (user) => {
-    if(user) {
-      location.replace('./profile.html');
-    }
-  });
 }
 
 // Actions
@@ -41,11 +30,11 @@ async function doSignIn(){
     const pw = passEl?.value || '';
     await signInWithEmailAndPassword(auth, em, pw);
     msg('Signed in!', true);
-    redirectToProfileWhenReady();
+    // redirect after sign-in
+    location.replace('./profile.html');
   }catch(err){
     const m = err?.message || String(err);
     msg(m);
-    alert('Sign-in error: ' + m);
   }
 }
 
@@ -56,11 +45,10 @@ async function doCreate(){
     const pw = passEl?.value || '';
     await createUserWithEmailAndPassword(auth, em, pw);
     msg('Account created!', true);
-    redirectToProfileWhenReady();
+    location.replace('./profile.html');
   }catch(err){
     const m = err?.message || String(err);
     msg(m);
-    alert('Create error: ' + m);
   }
 }
 
@@ -73,7 +61,6 @@ async function doForgot(){
   }catch(err){
     const m = err?.message || String(err);
     msg(m);
-    alert('Reset error: ' + m);
   }
 }
 
