@@ -1,53 +1,87 @@
-// public/js/profile.js
+// public/js/auth.js
 import { auth } from "./firebase.js";
 import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   onAuthStateChanged,
-  signOut,
-  updateProfile,
-  deleteUser,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const $ = (id)=>document.getElementById(id);
-const statusEl = $("status"), nameEl = $("displayName"), emailEl = $("email");
+// ---- helpers ----
+const $ = (id) => document.getElementById(id);
+const emailEl = $("email");
+const passEl  = $("password");
+const createBtn = $("create");
+const signInBtn = $("signin");
+const forgotBtn = $("forgot");
+const statusEl = $("status");
 
-function msg(t, ok=false){
-  if(statusEl){ statusEl.textContent=t; statusEl.className = ok ? "ok" : "warn"; }
+function msg(text, ok=false){
+  if(!statusEl) return;
+  statusEl.textContent = text;
+  statusEl.className = ok ? "ok" : "warn";
 }
 
+function busy(on){
+  [createBtn, signInBtn, forgotBtn].forEach(b => b && (b.disabled = on));
+}
+
+// ---- actions ----
+async function doCreate(){
+  busy(true); msg("Creating account…");
+  try{
+    const em = emailEl.value.trim();
+    const pw = passEl.value;
+    await createUserWithEmailAndPassword(auth, em, pw);
+    msg("Account created. Redirecting…", true);
+    location.assign("./profile.html");
+  }catch(e){
+    msg(e?.message || "Couldn’t create account");
+  }finally{ busy(false); }
+}
+
+async function doSignIn(){
+  busy(true); msg("Signing in…");
+  try{
+    const em = emailEl.value.trim();
+    const pw = passEl.value;
+    await signInWithEmailAndPassword(auth, em, pw);
+    msg("Signed in. Redirecting…", true);
+    location.assign("./profile.html");
+  }catch(e){
+    msg(e?.message || "Sign-in failed");
+  }finally{ busy(false); }
+}
+
+async function doReset(){
+  busy(true); msg("Sending reset…");
+  try{
+    const em = emailEl.value.trim();
+    if(!em) throw new Error("Enter your email to reset.");
+    await sendPasswordResetEmail(auth, em);
+    msg("Password reset email sent.", true);
+  }catch(e){
+    msg(e?.message || "Couldn’t send reset");
+  }finally{ busy(false); }
+}
+
+// ---- wiring ----
+createBtn?.addEventListener("click", doCreate);
+signInBtn?.addEventListener("click", doSignIn);
+forgotBtn?.addEventListener("click", doReset);
+
+// Optional: allow Enter key to submit
+[emailEl, passEl].forEach(el=>{
+  el?.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter") doSignIn();
+  });
+});
+
+// Keep UI in sync
 onAuthStateChanged(auth, (u)=>{
-  if(!u){
-    msg("You’re signed out.");
-    $("profileBox") && ($("profileBox").style.display = "none");
-    return;
+  if(u){
+    msg(`Signed in as ${u.email}`, true);
+  }else{
+    msg("Not signed in.");
   }
-  $("profileBox") && ($("profileBox").style.display = "block");
-  emailEl && (emailEl.textContent = u.email || "—");
-  nameEl && (nameEl.value = u.displayName || "");
-  msg("Loaded.", true);
-});
-
-$("logout")?.addEventListener("click", async ()=>{
-  try{
-    await signOut(auth);
-    location.replace("./auth.html");
-  }catch(e){ msg("Couldn’t sign out."); }
-});
-
-$("save")?.addEventListener("click", async ()=>{
-  const u = auth.currentUser;
-  if(!u) return;
-  try{
-    await updateProfile(u, { displayName: nameEl.value.trim() });
-    msg("Saved.", true);
-  }catch(e){ msg("Couldn’t save."); }
-});
-
-$("deleteAcct")?.addEventListener("click", async ()=>{
-  const u = auth.currentUser;
-  if(!u) return;
-  if(!confirm("Delete your account? This cannot be undone.")) return;
-  try{
-    await deleteUser(u);
-    location.replace("./auth.html");
-  }catch(e){ msg("Couldn’t delete (re-auth may be required)."); }
 });
