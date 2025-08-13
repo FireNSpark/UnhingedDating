@@ -1,6 +1,10 @@
 // public/js/firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
 // ✅ Your real Firebase config
@@ -23,6 +27,9 @@ for (const k of ["apiKey", "authDomain", "projectId", "appId"]) {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+
+// Persist auth across page loads/tabs (prevents login -> bounce back)
+await setPersistence(auth, browserLocalPersistence).catch(() => {});
 
 // Analytics can fail on http/local; that's fine
 try {
