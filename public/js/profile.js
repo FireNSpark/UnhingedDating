@@ -1,121 +1,80 @@
 // public/js/profile.js
-// Uses your existing Firebase init at /public/js/firebase.js
 import { auth } from "./firebase.js";
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
   onAuthStateChanged,
-  updateProfile, // <-- add this
+  updateProfile,
+  signOut,
+  deleteUser,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+// Elements (must match profile.html)
 const $ = (id) => document.getElementById(id);
-const emailEl = $("email");
-const passEl  = $("password");
-const createBtn = $("create");
-const signInBtn = $("signin");
-const forgotBtn = $("forgot");
-const msg = $("status"); // matches <p id="status"> in profile.html;
-const displayNameEl = $("displayName"); // <-- assumes you have <input id="displayName">
+const statusEl   = $("status");
+const boxEl      = $("profileBox");
+const nameInput  = $("displayName");
+const emailOut   = $("email");
+const saveBtn    = $("save");
+const delBtn     = $("deleteAcct");
+const logoutBtn  = $("logout");
 
-function setMsg(t, type="") {
-  if (!msg) return;
-  msg.textContent = t || "";
-  msg.className = type;
+function msg(text = "", ok = false) {
+  if (!statusEl) return;
+  statusEl.textContent = text;
+  statusEl.className = ok ? "ok" : "warn";
 }
-function busy(on=true) {
-  [createBtn, signInBtn, forgotBtn].forEach(b => b && (b.disabled = on));
-}
-function goProfile() {
-  location.replace("./profile.html");
+function showBox(show) {
+  if (boxEl) boxEl.style.display = show ? "block" : "none";
 }
 
-function normalizeError(code){
-  switch(code){
-    case "auth/invalid-email": return "That email looks wrong.";
-    case "auth/missing-password": return "Enter a password.";
-    case "auth/weak-password": return "Password must be 6+ characters.";
-    case "auth/email-already-in-use": return "Account already exists. Try Sign in.";
-    case "auth/invalid-credential":
-    case "auth/wrong-password": return "Email or password is incorrect.";
-    case "auth/user-not-found": return "No account for that email.";
-    default: return "Something went sideways. Try again.";
-  }
-}
-
+// Guard initial null to avoid bounce loop
 let first = true;
-onAuthStateChanged(auth, async (u) => {
-  const box = document.getElementById('profileBox');
-  const emailOut = document.getElementById('email');
-
+onAuthStateChanged(auth, (u) => {
   if (u) {
-    if (box) box.style.display = 'block';
-    if (emailOut) emailOut.textContent = u.email || '—';
-
-    // NEW: Save display name if provided
-    if (displayNameEl && displayNameEl.value.trim()) {
-      try {
-        await updateProfile(u, { displayName: displayNameEl.value.trim() });
-        setMsg("Profile updated", "ok");
-      } catch (err) {
-        setMsg(normalizeError(err?.code), "warn");
-      }
-    }
-
-    setMsg("", true);
+    showBox(true);
+    if (emailOut) emailOut.textContent = u.email || "—";
+    if (nameInput) nameInput.value = u.displayName || "";
+    msg("", true);
   } else if (!first) {
-    // only redirect after the initial null to avoid the loop
-    location.replace('./auth.html'); // or './login.html' if that’s your filename
+    msg("You’re signed out.", false);
+    // stay on page instead of bouncing to avoid loops
   }
   first = false;
 });
 
-async function doCreate() {
-  const email = (emailEl?.value || "").trim();
-  const pass  = passEl?.value || "";
-  if (!email || !pass){ setMsg("Email & password required.", "warn"); return; }
-  busy(true); setMsg("Creating account...");
-  try{
-    await createUserWithEmailAndPassword(auth, email, pass);
-    setMsg(""); goProfile();
-  }catch(err){
-    setMsg(normalizeError(err?.code), "warn");
-  }finally{ busy(false); }
-}
-
-async function doSignIn() {
-  const email = (emailEl?.value || "").trim();
-  const pass  = passEl?.value || "";
-  if (!email || !pass){ setMsg("Email & password required.", "warn"); return; }
-  busy(true); setMsg("Signing in...");
-  try{
-    await signInWithEmailAndPassword(auth, email, pass);
-    setMsg(""); goProfile();
-  }catch(err){
-    setMsg(normalizeError(err?.code), "warn");
-  }finally{ busy(false); }
-}
-
-async function doReset() {
-  const email = (emailEl?.value || "").trim();
-  if (!email){ setMsg("Enter your email first.", "warn"); return; }
-  busy(true); setMsg("Sending reset link...");
-  try{
-    await sendPasswordResetEmail(auth, email);
-    setMsg("Check your inbox for the reset link.", "ok");
-  }catch(err){
-    setMsg(normalizeError(err?.code), "warn");
-  }finally{ busy(false); }
-}
-
-createBtn?.addEventListener("click", (e)=>{ e.preventDefault(); doCreate(); });
-signInBtn?.addEventListener("click", (e)=>{ e.preventDefault(); doSignIn(); });
-forgotBtn?.addEventListener("click", (e)=>{ e.preventDefault(); doReset(); });
-
-[emailEl, passEl].forEach(el=>{
-  el?.addEventListener("keydown", (e)=>{
-    if(e.key === "Enter") doSignIn();
-  });
+// Save display name
+saveBtn?.addEventListener("click", async () => {
+  const u = auth.currentUser;
+  if (!u) { msg("You’re signed out. Log in again.", false); return; }
+  const name = (nameInput?.value || "").trim();
+  if (!name) { msg("Enter a display name.", false); return; }
+  try {
+    await updateProfile(u, { displayName: name });
+    msg("Saved.", true);
+  } catch (e) {
+    msg(e?.message || "Couldn't save.", false);
+  }
 });
 
+// Delete account
+delBtn?.addEventListener("click", async () => {
+  const u = auth.currentUser;
+  if (!u) return;
+  if (!confirm("Delete your account? This cannot be undone.")) return;
+  try {
+    await deleteUser(u);
+    msg("Account deleted.", true);
+    location.replace("./login.html");
+  } catch (e) {
+    msg(e?.message || "Couldn't delete account.", false);
+  }
+});
 
+// Log out
+logoutBtn?.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    location.replace("./login.html");
+  } catch (e) {
+    msg(e?.message || "Couldn't sign out.", false);
+  }
+});
