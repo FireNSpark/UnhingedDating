@@ -15,7 +15,7 @@ const firebaseConfig = {
 };
 
 // Guard: fail loudly if anything is missing
-for (const k of ["apiKey","authDomain","projectId","appId"]) {
+for (const k of ["apiKey", "authDomain", "projectId", "appId"]) {
   if (!firebaseConfig[k]) {
     throw new Error(`[Firebase] Missing ${k} in firebaseConfig`);
   }
@@ -24,5 +24,9 @@ for (const k of ["apiKey","authDomain","projectId","appId"]) {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-// Analytics can fail on http/local; that’s fine
-try { getAnalytics(app); } catch (_) {} // this is the version I'm using
+// Analytics can fail on http/local; that's fine
+try {
+  getAnalytics(app);
+} catch (_) {
+  // ignore analytics errors
+}
