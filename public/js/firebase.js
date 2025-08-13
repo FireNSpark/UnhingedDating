@@ -7,6 +7,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
+console.log("[firebase.js] loading");
+
 const firebaseConfig = {
   apiKey: "AIzaSyC4K7iCqvxTo6Gj5oIPsErF_vMDlhi0znE",
   authDomain: "unhinged-8c6da.firebaseapp.com",
@@ -17,17 +19,18 @@ const firebaseConfig = {
   measurementId: "G-QEEY24M17T"
 };
 
+// guard: make sure key fields exist
+for (const k of ["apiKey","authDomain","projectId","appId"]) {
+  if (!firebaseConfig[k]) throw new Error(`[Firebase] Missing ${k} in firebaseConfig`);
+}
+
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-// Wrap in an async IIFE so we don’t use top-level await
-(async () => {
-  try {
-    await setPersistence(auth, browserLocalPersistence);
-  } catch (err) {
-    console.error('Auth persistence error:', err);
-  }
-})();
+// set persistence without top-level await
+setPersistence(auth, browserLocalPersistence)
+  .then(() => console.log("[firebase.js] persistence: local"))
+  .catch(err => console.warn("[firebase.js] persistence error:", err?.message || err));
 
-// Optional analytics
 try { getAnalytics(app); } catch (_) {}
+console.log("[firebase.js] loaded");
