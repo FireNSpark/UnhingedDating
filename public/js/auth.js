@@ -1,6 +1,4 @@
-// public/js/auth.js
-
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { auth } from "./firebase.js";
 
 const emailEl = document.getElementById('email');
@@ -12,7 +10,6 @@ const createBtn = document.getElementById('create');
 const forgotBtn = document.getElementById('forgot');
 
 async function doSignIn() {
-  alert('doSignIn() function called'); // Debug probe
   statusEl.textContent = '';
   try {
     const userCred = await signInWithEmailAndPassword(auth, emailEl.value, passEl.value);
@@ -49,3 +46,8 @@ async function doForgot() {
     statusEl.className = 'warn';
   }
 }
+
+signinBtn?.addEventListener('click', doSignIn);
+createBtn?.addEventListener('click', doCreate);
+forgotBtn?.addEventListener('click', doForgot);
+
