@@ -28,7 +28,7 @@ function busy(on=true) {
 function goProfile() {
   location.replace("./profile.html"); // relative path; also prevents back-button returning to login
 };
-}
+
 function normalizeError(code){
   switch(code){
     case "auth/invalid-email": return "That email looks wrong.";
