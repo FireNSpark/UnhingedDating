@@ -60,3 +60,16 @@ async function doForgot(){
   try{
     const em = (emailEl?.value || '').trim();
     if(!em){ msg('Enter your email first'); return; }
+    await sendPasswordResetEmail(auth, em);
+    msg('Reset email sent', true);
+  }catch(err){
+    const m = err?.message || String(err);
+    msg(m);
+    alert('Reset error: ' + m); // TEMP
+  }
+}
+
+// Wire up
+signinBtn?.addEventListener('click', doSignIn);
+createBtn?.addEventListener('click', doCreate);
+forgotBtn?.addEventListener('click', doForgot);
