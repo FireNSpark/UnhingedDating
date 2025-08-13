@@ -1,70 +1,33 @@
-// public/js/auth.js
+// public/js/firebase.js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { auth } from "./firebase.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
-// Elements
-const emailEl  = document.getElementById('email');
-const passEl   = document.getElementById('password');
-const statusEl = document.getElementById('status');
+const firebaseConfig = {
+  apiKey: "AIzaSyC4K7iCqvxTo6Gj5oIPsErF_vMDlhi0znE",
+  authDomain: "unhinged-8c6da.firebaseapp.com",
+  projectId: "unhinged-8c6da",
+  storageBucket: "unhinged-8c6da.appspot.com",
+  messagingSenderId: "248472796860",
+  appId: "1:248472796860:web:1d7488b03935ae64f5dab9",
+  measurementId: "G-QEEY24M17T"
+};
 
-const signinBtn = document.getElementById('signin');
-const createBtn = document.getElementById('create');
-const forgotBtn = document.getElementById('forgot');
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
 
-// Helper
-function msg(t, ok=false){
-  if(!statusEl) return;
-  statusEl.textContent = t || '';
-  statusEl.className = ok ? 'ok' : 'warn';
-}
-
-// Actions
-async function doSignIn(){
-  try{
-    msg('Signing in…');
-    const em = (emailEl?.value || '').trim();
-    const pw = passEl?.value || '';
-    await signInWithEmailAndPassword(auth, em, pw);
-    msg('Signed in!', true);
-    // redirect after sign-in
-    location.replace('./home.html');
-  }catch(err){
-    const m = err?.message || String(err);
-    msg(m);
+// Wrap in an async IIFE so we don’t use top-level await
+(async () => {
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+  } catch (err) {
+    console.error('Auth persistence error:', err);
   }
-}
+})();
 
-async function doCreate(){
-  try{
-    msg('Creating account…');
-    const em = (emailEl?.value || '').trim();
-    const pw = passEl?.value || '';
-    await createUserWithEmailAndPassword(auth, em, pw);
-    msg('Account created!', true);
-    location.replace('./home.html');
-  }catch(err){
-    const m = err?.message || String(err);
-    msg(m);
-  }
-}
-
-async function doForgot(){
-  try{
-    const em = (emailEl?.value || '').trim();
-    if(!em){ msg('Enter your email first'); return; }
-    await sendPasswordResetEmail(auth, em);
-    msg('Reset email sent', true);
-  }catch(err){
-    const m = err?.message || String(err);
-    msg(m);
-  }
-}
-
-// Wire up
-signinBtn?.addEventListener('click', doSignIn);
-createBtn?.addEventListener('click', doCreate);
-forgotBtn?.addEventListener('click', doForgot);
+// Optional analytics
+try { getAnalytics(app); } catch (_) {}
