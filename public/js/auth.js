@@ -1,78 +1,81 @@
-// public/js/auth.js
-// Uses the existing initializer in ./firebase.js — no config here.
+// public/js/auth.js  (type="module")
 import { auth } from "./firebase.js";
 import {
-  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   sendPasswordResetEmail,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+  onAuthStateChanged,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const $ = (id) => document.getElementById(id);
-const emailEl = $("email");
-const passEl  = $("password");
-const msg     = $("msg");
+// ---- DOM ----
+const $ = (s) => document.querySelector(s);
+const emailEl = $("#email");
+const passEl  = $("#password");
+const signIn  = $("#signInBtn");
+const signUp  = $("#signUpBtn");
+const forgot  = $("#forgotBtn");
+const status  = $("#authStatus");
 
-function say(text, cls = "") {
-  if (!msg) return;
-  msg.className = cls ? `msg ${cls}` : "msg";
-  msg.textContent = text;
+function uiBusy(v) {
+  [signIn, signUp, forgot].forEach(b => b && (b.disabled = v));
+  if (v) status && (status.textContent = "Working…");
+}
+function setMsg(txt, ok=false) {
+  if (!status) return;
+  status.textContent = txt;
+  status.style.color = ok ? "#7CFF7C" : "#ffd166";
 }
 
-function goProfile() {
-  // robust redirect that works on subpaths too
-  location.assign(new URL("./profile.html", location).href);
-}
+// Persist login in this browser
+setPersistence(auth, browserLocalPersistence).catch(()=>{});
 
-// Already signed in? Go to profile.
-onAuthStateChanged(auth, (user) => {
-  if (user && !location.pathname.endsWith("/profile.html")) goProfile();
-});
-
-// Sign In
-$("signin")?.addEventListener("click", async () => {
-  say("Signing in…");
+// Sign in
+signIn?.addEventListener("click", async (e) => {
+  e.preventDefault();
+  uiBusy(true);
   try {
     await signInWithEmailAndPassword(auth, emailEl.value.trim(), passEl.value);
-    say("Signed in.", "ok");
-    goProfile();
-  } catch (e) {
-    say(pretty(e), "err");
-  }
+    setMsg("Signed in! Redirecting…", true);
+    setTimeout(()=> location.assign("/"), 600);
+  } catch (err) {
+    setMsg(cleanErr(err));
+  } finally { uiBusy(false); }
 });
 
-// Create Account
-$("signup")?.addEventListener("click", async () => {
-  say("Creating account…");
+// Create account
+signUp?.addEventListener("click", async (e) => {
+  e.preventDefault();
+  uiBusy(true);
   try {
     await createUserWithEmailAndPassword(auth, emailEl.value.trim(), passEl.value);
-    say("Account created.", "ok");
-    goProfile();
-  } catch (e) {
-    say(pretty(e), "err");
-  }
+    setMsg("Account created! Redirecting…", true);
+    setTimeout(()=> location.assign("/"), 800);
+  } catch (err) {
+    setMsg(cleanErr(err));
+  } finally { uiBusy(false); }
 });
 
 // Forgot password
-$("forgot")?.addEventListener("click", async (ev) => {
-  ev.preventDefault();
-  const email = emailEl.value.trim();
-  if (!email) return say("Enter your email first.", "err");
-  say("Sending reset link…");
+forgot?.addEventListener("click", async (e) => {
+  e.preventDefault();
+  if (!emailEl.value.trim()) return setMsg("Enter your email first.");
+  uiBusy(true);
   try {
-    await sendPasswordResetEmail(auth, email);
-    say("Reset link sent. Check your inbox.", "ok");
-  } catch (e) {
-    say(pretty(e), "err");
-  }
+    await sendPasswordResetEmail(auth, emailEl.value.trim());
+    setMsg("Password reset email sent.", true);
+  } catch (err) {
+    setMsg(cleanErr(err));
+  } finally { uiBusy(false); }
 });
 
-// Friendly error text
-function pretty(err) {
-  const m = String(err?.message || err);
-  if (m.includes("auth/invalid-credential")) return "Wrong email or password.";
-  if (m.includes("auth/email-already-in-use")) return "That email already has an account.";
-  if (m.includes("auth/weak-password")) return "Password is too weak.";
-  if (m.includes("auth/invalid-email")) return "That email doesn’t look right.";
-  return m.replace(/^Firebase:\s*/i, "");
+// Live auth state (optional status)
+onAuthStateChanged(auth, (u) => {
+  if (u) setMsg(`Signed in as ${u.email}`, true);
+});
+
+function cleanErr(err){
+  const m = (err?.code || "").replace("auth/", "").replaceAll("-", " ");
+  return m ? m.charAt(0).toUpperCase()+m.slice(1) : "Something went wrong.";
 }
