@@ -25,4 +25,4 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
 // Analytics can fail on http/local; that’s fine
-try { getAnalytics(app); } catch (_) {}
+try { getAnalytics(app); } catch (_) {} // this is the version I'm using
