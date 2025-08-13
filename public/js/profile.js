@@ -25,9 +25,9 @@ function setMsg(t, type="") {
 function busy(on=true) {
   [createBtn, signInBtn, forgotBtn].forEach(b => b && (b.disabled = on));
 }
-function goProfile(){
-  // IMPORTANT: explicit file to avoid /profile (no extension) 404
-  location.assign("/profile.html");
+function goProfile() {
+  location.replace("./profile.html"); // relative path; also prevents back-button returning to login
+};
 }
 function normalizeError(code){
   switch(code){
