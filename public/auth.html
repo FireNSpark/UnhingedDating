@@ -1,63 +1,52 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>UNHINGED — Sign In / Sign Up</title>
-  <link rel="stylesheet" href="./style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UNHINGED — Sign In</title>
+  <meta name="theme-color" content="#E11D2A" />
   <style>
-    body{background:#0f0f12;color:#fff;font:500 16px/1.5 Inter,system-ui}
-    .wrap{max-width:460px;margin:0 auto;padding:24px}
-    .card{background:#15161b;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px}
-    label{display:block;margin:10px 0 6px;color:#dadbe7}
-    input{width:100%;padding:12px;border-radius:10px;border:1px solid #2a2a2a;background:#0c0c0c;color:#fff}
-    .btn{padding:12px 14px;border-radius:12px;border:0;font-weight:900;cursor:pointer}
-    .btn.red{background:#E11D2A;color:#fff}
-    .row{display:flex;gap:10px;margin-top:10px}
-    .link{color:#ddd;text-decoration:none}
-    .note{margin-top:10px;color:#bdbdcc;font-size:13px}
+    :root{--red:#E11D2A;--ink:#0f0f12;--card:#17181d;--line:#262833}
+    *{box-sizing:border-box} body{margin:0;background:#0f0f12;color:#fff;font:500 16px/1.5 Inter,system-ui,Segoe UI}
+    .wrap{max-width:720px;margin:0 auto;padding:28px}
+    h1{font-size:38px;margin:24px 0 16px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+    label{display:block;margin:10px 0 6px;color:#e8e8e8;font-size:14px}
+    input{width:100%;padding:14px;border-radius:12px;border:1px solid #2a2d36;background:#101115;color:#fff;outline:none}
+    input:focus{border-color:#f6c31c;box-shadow:0 0 0 3px #f6c31c33}
+    .row{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+    .btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer}
+    .primary{background:var(--red);color:#fff}
+    .ghost{background:#20222a;color:#fff;border:1px solid #2a2d36}
+    a.small{color:#cfd0de;text-decoration:none;font-size:14px;margin-left:8px}
+    .status{margin-top:10px;font-size:13px;color:#cfd0de}
+    .ok{color:#7CFF7C}.warn{color:#ffd166}
   </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Sign in to Unhinged</h1>
-  <div class="card">
-    <label>Email</label>
-    <input id="email" type="email" placeholder="you@email.com" required>
-    <label>Password</label>
-    <input id="pw" type="password" placeholder="••••••••" required>
-    <div class="row">
-      <button id="signin" class="btn red" type="button">Sign In</button>
-      <button id="signup" class="btn" type="button">Create account</button>
-      <a id="reset" class="link" href="#" style="margin-left:auto">Forgot?</a>
+  <div class="wrap">
+    <h1>Sign in to Unhinged</h1>
+
+    <div class="card">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" placeholder="you@email.com" />
+
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" />
+
+      <div class="row">
+        <button id="signInBtn" class="btn ghost">Sign In</button>
+        <button id="signUpBtn" class="btn primary">Create account</button>
+        <a id="forgotBtn" href="#" class="small">Forgot?</a>
+      </div>
+
+      <div id="authStatus" class="status">Ready.</div>
     </div>
-    <div id="msg" class="note">Ready.</div>
   </div>
-</div>
 
-<!-- Firebase + auth helpers -->
-<script type="module" src="./js/firebase.js"></script>
-<script type="module">
-  import { doLogin, doSignup } from "./js/auth.js";
-  const $ = (id)=>document.getElementById(id), msg = $("msg");
-
-  $("signin").onclick = async ()=>{
-    msg.textContent = "Signing in…";
-    try{ await doLogin($("email").value.trim(), $("pw").value); location.href = "./profile.html"; }
-    catch(e){ msg.textContent = e.message || "Login failed"; }
-  };
-
-  $("signup").onclick = async ()=>{
-    msg.textContent = "Creating account…";
-    try{
-      const email = $("email").value.trim();
-      const pass  = $("pw").value;
-      await doSignup("", email, pass);
-      location.href = "./profile.html";
-    }catch(e){ msg.textContent = e.message || "Signup failed"; }
-  };
-
-  $("reset").onclick = (e)=>{
-    e.preventDefault();
-    msg.textContent = "Use the app’s reset flow (coming soon).";
-  };
-</script>
-</body></html>
+  <!-- Firebase config/module you already have -->
+  <script type="module" src="js/firebase.js"></script>
+  <!-- Auth wiring (uses the config above) -->
+  <script type="module" src="js/auth.js"></script>
+</body>
+</html>
